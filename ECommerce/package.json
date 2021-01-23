@@ -1,0 +1,25 @@
+{
+  "name": "e-commerce",
+  "version": "1.0.0",
+  "main": "dataexception.js",
+  "scripts": {
+    "start": "node ./dist/logic/class/LCategory.js",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
+  },
+  "author": {
+    "name": "Carlos Rodriguez"
+  },
+  "keywords": [
+    "backend",
+    "ts",
+    "typescript"
+  ],
+  "devDependencies": {
+    "@types/node": "^8.0.14",
+    "typescript": "^3.2.2"
+  },
+  "dependencies": {
+    "mongodb": "3.6.3"
+  }
+}

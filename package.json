@@ -1,0 +1,22 @@
+{
+  "name": "e-commercee",
+  "version": "0.0.3",
+  "description": "This package contains a backend of what would be the logic of a radio transmitter software, the architecture used is made in 3 layers",
+  "main": "app.js",
+  "type":"commonjs",
+  "license": "MIT",
+  "author": {
+    "name": "Carlos Rodriguez"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rwkama1/RadioTrasmitter"
+  },
+  "keywords": [
+    "backend",
+    "typescript"
+  ],
+  "scripts": {
+    "start": "node app"
+  }
+}
