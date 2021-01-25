@@ -40,6 +40,21 @@ class LCategory {
             }
         });
     }
+    validateUpdateCategory(dtcat) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.validateName(dtcat.name);
+            let objsearchcat = yield this.getCategory(dtcat.name);
+            if (dtcat == null) {
+                throw new logicexception_1.LogicException("The Category is empty ");
+            }
+            if (objsearchcat == null) {
+                throw new logicexception_1.LogicException("That Category does not exists in the system");
+            }
+            if (dtcat.description.trim() === "") {
+                throw new logicexception_1.LogicException("The description cannot be empty");
+            }
+        });
+    }
     getCategory(name) {
         return __awaiter(this, void 0, void 0, function* () {
             this.validateName(name);
@@ -53,13 +68,19 @@ class LCategory {
             FactoryData_1.FactoryData.getDCategory().addCategory(dtcategory);
         });
     }
+    updateCategory(dtcategory) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.validateUpdateCategory(dtcategory);
+            FactoryData_1.FactoryData.getDCategory().updateCategory(dtcategory);
+        });
+    }
 }
 exports.LCategory = LCategory;
 // var cat = new Category("Monitor",
 // "Es aquel dispositivo usado por usuarios para que estos puedan comunicarse a través de diferentes partes del ordenador usando datos.En la actualidad existen muchos tipos de monitor de computadora y poseen funciones similares pero con una ejecución diferente");
 // var cat = new Category("Conectividad",
 //  "Es la capacidad de un dispositivo de conectarse y comunicarse con otro");
-// LCategory.getInstance().addCategory(cat).then(data => {
+// LCategory.getInstance().updateCategory(cat).then(data => {
 //    console.log(data)
 // });
 //# sourceMappingURL=LCategory.js.map

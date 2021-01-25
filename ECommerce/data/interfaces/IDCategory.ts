@@ -6,6 +6,7 @@ export interface IDCategory {
     // getAdvertisersByNameLetter(expression: string): Promise<Advertiser[]>;
     addCategory(dtcat: Category);
     getCategory(name:string);
+    updateCategory(dtcat: Category);
     // deleteAdvertiser(dtadvertiser: Advertiser);
     // updateAdvertiser(dtadvertiser: Advertiser);
 }

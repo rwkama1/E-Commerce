@@ -38,6 +38,24 @@ export class LCategory implements ILCategory {
      
       
     }
+    private  async validateUpdateCategory(dtcat:Category)
+    {
+        this.validateName(dtcat.name);
+        let objsearchcat = await this.getCategory(dtcat.name);
+        if (dtcat == null)
+        {
+            throw new LogicException("The Category is empty ");
+        }
+        if (objsearchcat == null) {
+            throw new LogicException("That Category does not exists in the system");
+        }
+        if (dtcat.description.trim() === "")
+        {
+            throw new LogicException("The description cannot be empty");
+        }
+     
+      
+    }
     public async getCategory(name: string) {
         this.validateName(name);
         var searchcategory = await FactoryData.getDCategory().getCategory(name);
@@ -48,6 +66,11 @@ export class LCategory implements ILCategory {
         await this.validateAddCategory(dtcategory);
         FactoryData.getDCategory().addCategory(dtcategory);
     }
+    public async updateCategory(dtcategory: Category) {
+        await this.validateUpdateCategory(dtcategory);
+        FactoryData.getDCategory().updateCategory(dtcategory);
+    }
+
 
 }
 // var cat = new Category("Monitor",
@@ -55,6 +78,6 @@ export class LCategory implements ILCategory {
 // var cat = new Category("Conectividad",
 //  "Es la capacidad de un dispositivo de conectarse y comunicarse con otro");
 
-// LCategory.getInstance().addCategory(cat).then(data => {
+// LCategory.getInstance().updateCategory(cat).then(data => {
 //    console.log(data)
 // });

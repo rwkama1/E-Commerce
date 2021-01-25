@@ -26,8 +26,26 @@ export class DCategory implements IDCategory {
         catch (e) {
             throw new DataException("Category could not be added" + e.message);
         }
+    }
+    public async updateCategory(dtcat: Category) {
+        try {
+
+            let cn = await Conexion.uri().connect();
+            let query = { _name: dtcat.name };
+            var newvalues = { $set: { _description: dtcat.description } };
+            const coladvert = cn.db("ECommerce").collection("Category");
+            const result = await coladvert.updateOne(query,newvalues);
+
+
+            cn.close();
+
+        }
+        catch (e) {
+            throw new DataException("Category could not be updated" + e.message);
+        }
 
     }
+
         public async getCategory(name:string) {
 
         let categoryobj= null;
@@ -49,8 +67,8 @@ export class DCategory implements IDCategory {
     }
 }
 //TESTING
-var cat = new Category("Monitor",
-"Es aquel dispositivo usado por usuarios para que estos puedan comunicarse a través de diferentes partes del ordenador usando datos.En la actualidad existen muchos tipos de monitor de computadora y poseen funciones similares pero con una ejecución diferente");
+// var cat = new Category("Monitor",
+// "Es aquel dispositivo usado por usuarios para que estos puedan comunicarse a través de diferentes partes del ordenador usando datos.En la actualidad existen muchos tipos de monitor de computadora y poseen funciones similares pero con una ejecución diferente");
 
 // DCategory.getInstance().addCategory(cat).then(data => {
 //    console.log(data)
