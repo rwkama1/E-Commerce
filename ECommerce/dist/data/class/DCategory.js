@@ -49,6 +49,20 @@ class DCategory {
             }
         });
     }
+    deleteCategory(dtcat) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let cn = yield Conection_1.Conexion.uri().connect();
+                let query = { _name: dtcat.name };
+                const colcat = cn.db("ECommerce").collection("Category");
+                const result = yield colcat.deleteOne(query);
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Category could not be deleted" + e.message);
+            }
+        });
+    }
     getCategory(name) {
         return __awaiter(this, void 0, void 0, function* () {
             let categoryobj = null;
@@ -65,6 +79,26 @@ class DCategory {
             }
             catch (e) {
                 throw new dataexception_1.DataException("Category could not be searched");
+            }
+        });
+    }
+    getCategorysByNameLetter(expression) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                var cn = yield Conection_1.Conexion.uri().connect();
+                var query = { _name: { $regex: expression } };
+                const collection = cn.db("ECommerce").collection("Category");
+                const result = yield collection.find(query).toArray();
+                let array = [];
+                for (var p of result) {
+                    var obj = new Category_1.Category(p._name, p._description);
+                    array.push(obj);
+                }
+                return array;
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Category could not be listed" + e.message);
             }
         });
     }

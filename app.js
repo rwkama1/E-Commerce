@@ -1,13 +1,16 @@
 const FactoryLogic = require("./ECommerce/dist/logic/FactoryLogic").FactoryLogic;
 const Category = require("./ECommerce/dist/shared/entity/Category").Category;
 
-let dtcat = new Category("PCc", "PC de Escritorio");
+let dtcat = new Category("PC", "PC de Escritoriooo");
 // FactoryLogic.getLCategory().addCategory(dtcat).then(data => {
 //     console.log(data);
 // });
 // FactoryLogic.getLCategory().getCategory(dtcat.name).then(data => {
 //     console.log(data);
 // });
-FactoryLogic.getLCategory().updateCategory(dtcat).then(data => {
+// FactoryLogic.getLCategory().deleteCategory(dtcat).then(data => {
+//     console.log(data);
+// });
+ FactoryLogic.getLCategory().getCategorysByNameLetter("").then(data => {
     console.log(data);
 });

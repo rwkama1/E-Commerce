@@ -20,6 +20,7 @@ class LCategory {
         }
         return LCategory.instancia;
     }
+    //Validations************************************
     validateName(name) {
         if (name.trim() === "") {
             throw new logicexception_1.LogicException("The name cannot be empty");
@@ -55,6 +56,20 @@ class LCategory {
             }
         });
     }
+    validateDeleteCategory(dtcat) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.validateName(dtcat.name);
+            let objsearchcat = yield this.getCategory(dtcat.name);
+            if (dtcat === null) {
+                throw new logicexception_1.LogicException("The Category is empty ");
+            }
+            if (objsearchcat === null) {
+                throw new logicexception_1.LogicException("That Category does not exists in the system");
+            }
+        });
+    }
+    //*********************************************** */
+    //Functions
     getCategory(name) {
         return __awaiter(this, void 0, void 0, function* () {
             this.validateName(name);
@@ -74,13 +89,18 @@ class LCategory {
             FactoryData_1.FactoryData.getDCategory().updateCategory(dtcategory);
         });
     }
+    deleteCategory(dtcategory) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.validateDeleteCategory(dtcategory);
+            FactoryData_1.FactoryData.getDCategory().deleteCategory(dtcategory);
+        });
+    }
+    getCategorysByNameLetter(expression) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var listexp = yield FactoryData_1.FactoryData.getDCategory().getCategorysByNameLetter(expression);
+            return listexp;
+        });
+    }
 }
 exports.LCategory = LCategory;
-// var cat = new Category("Monitor",
-// "Es aquel dispositivo usado por usuarios para que estos puedan comunicarse a través de diferentes partes del ordenador usando datos.En la actualidad existen muchos tipos de monitor de computadora y poseen funciones similares pero con una ejecución diferente");
-// var cat = new Category("Conectividad",
-//  "Es la capacidad de un dispositivo de conectarse y comunicarse con otro");
-// LCategory.getInstance().updateCategory(cat).then(data => {
-//    console.log(data)
-// });
 //# sourceMappingURL=LCategory.js.map

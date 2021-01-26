@@ -14,6 +14,7 @@ export class LCategory implements ILCategory {
 
         return LCategory.instancia;
     }
+    //Validations************************************
     private validateName(name: string)
     {
         if (name.trim() === "") {
@@ -56,6 +57,20 @@ export class LCategory implements ILCategory {
      
       
     }
+    private  async validateDeleteCategory(dtcat:Category)
+    {
+        this.validateName(dtcat.name);
+        let objsearchcat = await this.getCategory(dtcat.name);
+        if (dtcat === null)
+        {
+            throw new LogicException("The Category is empty ");
+        }
+        if (objsearchcat === null) {
+            throw new LogicException("That Category does not exists in the system");
+        }
+    }
+    //*********************************************** */
+    //Functions
     public async getCategory(name: string) {
         this.validateName(name);
         var searchcategory = await FactoryData.getDCategory().getCategory(name);
@@ -70,14 +85,15 @@ export class LCategory implements ILCategory {
         await this.validateUpdateCategory(dtcategory);
         FactoryData.getDCategory().updateCategory(dtcategory);
     }
+    public async deleteCategory(dtcategory: Category) {
+        await this.validateDeleteCategory(dtcategory);
+        FactoryData.getDCategory().deleteCategory(dtcategory);
+    }
+    public async getCategorysByNameLetter(expression: string)  {
+      var listexp = await FactoryData.getDCategory().getCategorysByNameLetter(expression);
+       return listexp;
+    }
+    
+    }
 
 
-}
-// var cat = new Category("Monitor",
-// "Es aquel dispositivo usado por usuarios para que estos puedan comunicarse a través de diferentes partes del ordenador usando datos.En la actualidad existen muchos tipos de monitor de computadora y poseen funciones similares pero con una ejecución diferente");
-// var cat = new Category("Conectividad",
-//  "Es la capacidad de un dispositivo de conectarse y comunicarse con otro");
-
-// LCategory.getInstance().updateCategory(cat).then(data => {
-//    console.log(data)
-// });

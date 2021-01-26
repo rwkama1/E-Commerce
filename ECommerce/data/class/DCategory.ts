@@ -45,8 +45,22 @@ export class DCategory implements IDCategory {
         }
 
     }
+    public async deleteCategory(dtcat: Category) {
+        try {
 
-        public async getCategory(name:string) {
+            let cn = await Conexion.uri().connect();
+            let query = { _name: dtcat.name };
+            const colcat = cn.db("ECommerce").collection("Category");
+            const result = await colcat.deleteOne(query);
+            cn.close();
+
+        }
+        catch (e) {
+            throw new DataException("Category could not be deleted" + e.message);
+        }
+
+    }
+    public async getCategory(name:string) {
 
         let categoryobj= null;
         try {
@@ -65,7 +79,34 @@ export class DCategory implements IDCategory {
         }
 
     }
+    public async getCategorysByNameLetter(expression: string) {
+   
+        try {
+            var cn = await Conexion.uri().connect();
+            var query = { _name: { $regex: expression } }
+            const collection = cn.db("ECommerce").collection("Category");
+            const result = await collection.find(query).toArray();
+    
+            let array = [];
+            for (var p of result) {
+                var obj = new Category(p._name,p._description)
+                array.push(obj);
+            }
+    
+            return array;
+            cn.close();
+    
+        }
+        catch (e) {
+            throw new DataException("Category could not be listed" + e.message);
+        }
+    
+    }
+
+    
+    
 }
+
 //TESTING
 // var cat = new Category("Monitor",
 // "Es aquel dispositivo usado por usuarios para que estos puedan comunicarse a través de diferentes partes del ordenador usando datos.En la actualidad existen muchos tipos de monitor de computadora y poseen funciones similares pero con una ejecución diferente");
