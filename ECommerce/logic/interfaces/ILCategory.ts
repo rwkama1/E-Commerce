@@ -6,10 +6,6 @@ export interface ILCategory {
     updateCategory(dtcategory: Category);
     deleteCategory(dtcategory: Category);
     getCategorysByNameLetter(expression: string) ;
-    // getAdvertisers(): Promise<Advertiser[]>;
-    // getAdvertiser(rut: number): Promise<Advertiser>;
-    // getAdvertisersByNameLetter(expression: string): Promise<Advertiser[]>;
-    // addCategory(dtcat: Category);
-    // deleteAdvertiser(dtadvertiser: Advertiser);
-    // updateAdvertiser(dtadvertiser: Advertiser);
+    getCategories();
+   
 }

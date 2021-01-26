@@ -102,6 +102,25 @@ class DCategory {
             }
         });
     }
+    getCategories() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let cn = yield Conection_1.Conexion.uri().connect();
+                const collection = cn.db("ECommerce").collection("Category");
+                const result = yield collection.find({}).toArray();
+                let array = [];
+                for (var p of result) {
+                    var obj = new Category_1.Category(p._name, p._description);
+                    array.push(obj);
+                }
+                return array;
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Categories could not be listed" + e.message);
+            }
+        });
+    }
 }
 exports.DCategory = DCategory;
 //TESTING

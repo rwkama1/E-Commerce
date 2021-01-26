@@ -7,5 +7,6 @@ export interface IDCategory {
     updateCategory(dtcat: Category);
     deleteCategory(dtcat: Category);
     getCategorysByNameLetter(expression: string);
+    getCategories();
   
 }

@@ -90,9 +90,15 @@ export class LCategory implements ILCategory {
         FactoryData.getDCategory().deleteCategory(dtcategory);
     }
     public async getCategorysByNameLetter(expression: string)  {
+        if(expression===undefined)
+           {return FactoryData.getDCategory().getCategories();}
       var listexp = await FactoryData.getDCategory().getCategorysByNameLetter(expression);
        return listexp;
     }
+    public async getCategories()  {
+        var list = await FactoryData.getDCategory().getCategories();
+         return list;
+      }
     
     }
 

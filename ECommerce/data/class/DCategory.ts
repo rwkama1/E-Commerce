@@ -102,7 +102,29 @@ export class DCategory implements IDCategory {
         }
     
     }
+    public async getCategories() {
+      
 
+        try {
+            let cn = await Conexion.uri().connect();
+            const collection = cn.db("ECommerce").collection("Category");
+            const result = await collection.find({}).toArray();
+
+            let array = [];
+            for (var p of result) {
+                var obj = new Category(p._name,p._description)
+                array.push(obj);
+            }
+
+            return array;
+            cn.close();
+
+        }
+        catch (e) {
+            throw new DataException("Categories could not be listed" + e.message);
+        }
+
+    }
     
     
 }
