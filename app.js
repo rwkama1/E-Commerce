@@ -3,7 +3,7 @@ const Category = require("./ECommerce/dist/shared/entity/Category").Category;
 
 let dtcat = new Category("PC", "PC de Escritoriooo");
 //****************************
-//Categories
+//CATEGORIES
 // FactoryLogic.getLCategory().addCategory(dtcat).then(data => {
 //     console.log(data);
 // });
@@ -19,3 +19,5 @@ let dtcat = new Category("PC", "PC de Escritoriooo");
 //  FactoryLogic.getLCategory().getCategories().then(data => {
 //     console.log(data);
 // });
+//***************************************** */
+//ARTICLES
