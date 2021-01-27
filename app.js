@@ -1,15 +1,17 @@
 const FactoryLogic = require("./ECommerce/dist/logic/FactoryLogic").FactoryLogic;
 const Category = require("./ECommerce/dist/shared/entity/Category").Category;
+const Article = require("./ECommerce/dist/shared/entity/Article").Article;
 
-let dtcat = new Category("PC", "PC de Escritoriooo");
+
+var dtcat = new Category("Monitor", "PC de Escritoriooo");
+
+ 
 //****************************
 //CATEGORIES
 // FactoryLogic.getLCategory().addCategory(dtcat).then(data => {
 //     console.log(data);
 // });
-// FactoryLogic.getLCategory().getCategory(dtcat.name).then(data => {
-//     console.log(data);
-// });
+
 // FactoryLogic.getLCategory().deleteCategory(dtcat).then(data => {
 //     console.log(data);
 // });
@@ -21,3 +23,30 @@ let dtcat = new Category("PC", "PC de Escritoriooo");
 // });
 //***************************************** */
 //ARTICLES
+// FactoryLogic.getLCategory().getCategory(dtcat.name).then(scat => {
+//     console.log(scat);
+//    var dtart=new Article("88934677890984364398","Monitor Led 19.5' Hd Kolke Entradas Hdmi Y Vga Loi",84.00,30,
+// "Disfrutá de una buena calidad de imagen con este monitor Kolke KES-459 que cuenta con una pantalla LED de 19.5 y una resolución de 1366 x 768. Puede inclinarse 5° hacia adelante y 15° hacia atrás.",
+// "gdsg.gif",scat);
+//     FactoryLogic.getLArticle().addArticle(dtart).then(data => {
+//         console.log(data);
+//     });
+    
+    
+// });
+FactoryLogic.getLCategory().getCategory(dtcat.name).then(scat => {
+    console.log(scat);
+   var dtart=new Article("12345678909898","Monitor Led 19.5' Hd Kolke Entradas Hdmi Y Vga Loi",84.00,30,
+"Disfrutá de una buena calidad de imagen con este monitor Kolke KES-459 que cuenta con una pantalla LED de 19.5 y una resolución de 1366 x 768. Puede inclinarse 5° hacia adelante y 15° hacia atrás.",
+"gdsg.gif",scat);
+    FactoryLogic.getLArticle().updateArticle(dtart).then(data => {
+        console.log(data);
+    });
+    
+    
+});
+// FactoryLogic.getLCategory().getCategory(dtart.category.name).then(scat => {
+//     console.log(scat);
+    
+// });
+

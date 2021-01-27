@@ -49,24 +49,30 @@ export class DArticle implements IDArticle {
         }
 
     }
-    // public async updateCategory(dtcat: Category) {
-    //     try {
+    public async updateArticle(dtart: Article) {
+        try {
 
-    //         let cn = await Conexion.uri().connect();
-    //         let query = { _name: dtcat.name };
-    //         var newvalues = { $set: { _description: dtcat.description } };
-    //         const coladvert = cn.db("ECommerce").collection("Category");
-    //         const result = await coladvert.updateOne(query,newvalues);
+            let cn = await Conexion.uri().connect();
+            let query = { _barcode: dtart.barcode };
+            var newvalues = { $set: { _name: dtart.name,
+                _price: dtart.price,
+                _img: dtart.img,
+                _category: dtart.category,
+                _description: dtart.description,
+                _stock: dtart.stock } };
+            const coladvert = cn.db("ECommerce").collection("Article");
+            const result = await coladvert.updateOne(query,newvalues);
 
 
-    //         cn.close();
+            cn.close();
 
-    //     }
-    //     catch (e) {
-    //         throw new DataException("Category could not be updated" + e.message);
-    //     }
+        }
+        catch (e) {
+            throw new DataException("Article could not be updated" + e.message);
+        }
 
-    // }
+    }
+
     // public async deleteCategory(dtcat: Category) {
     //     try {
 

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LArticle = void 0;
 const FactoryData_1 = require("../../data/FactoryData");
 const logicexception_1 = require("../../shared/exceptions/logicexception");
+const LCategory_1 = require("./LCategory");
 class LArticle {
     constructor() { }
     static getInstance() {
@@ -30,12 +31,19 @@ class LArticle {
     validateAddArticle(dtart) {
         return __awaiter(this, void 0, void 0, function* () {
             this.validateBarCode(dtart.barcode);
-            let objart = yield this.getArticle(dtart.barcode);
-            if (dtart == null) {
-                throw new logicexception_1.LogicException("The Article is empty ");
+            if (dtart.category == null) {
+                throw new logicexception_1.LogicException("The Category is null");
             }
+            var searobjcat = yield LCategory_1.LCategory.getInstance().getCategory(dtart.category.name);
+            if (searobjcat == null) {
+                throw new logicexception_1.LogicException("That Category does not exists in the system");
+            }
+            var objart = yield this.getArticle(dtart.barcode);
             if (objart != null) {
                 throw new logicexception_1.LogicException("That Article already exists in the system");
+            }
+            if (dtart == null) {
+                throw new logicexception_1.LogicException("The Article is empty ");
             }
             if (dtart.description.trim() === "") {
                 throw new logicexception_1.LogicException("The description cannot be empty");
@@ -43,7 +51,44 @@ class LArticle {
             if (dtart.img.trim() === "") {
                 throw new logicexception_1.LogicException("The img cannot be empty");
             }
-            if (dtart.img.trim().match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
+            if (!(dtart.img.trim().match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/))) {
+                throw new logicexception_1.LogicException("Only images files are allowed");
+            }
+            if (dtart.name.trim() === "") {
+                throw new logicexception_1.LogicException("The name cannot be empty");
+            }
+            if (dtart.price < 1) {
+                throw new logicexception_1.LogicException("The price must be greater than 0");
+            }
+            if (dtart.stock < 1) {
+                throw new logicexception_1.LogicException("The stock must be greater than 0");
+            }
+        });
+    }
+    validateUpdateArticle(dtart) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.validateBarCode(dtart.barcode);
+            if (dtart.category == null) {
+                throw new logicexception_1.LogicException("The Category is null");
+            }
+            var searobjcat = yield LCategory_1.LCategory.getInstance().getCategory(dtart.category.name);
+            if (searobjcat == null) {
+                throw new logicexception_1.LogicException("That Category does not exists in the system");
+            }
+            var objart = yield this.getArticle(dtart.barcode);
+            if (objart == null) {
+                throw new logicexception_1.LogicException("That Article does not exists in the system");
+            }
+            if (dtart == null) {
+                throw new logicexception_1.LogicException("The Article is empty ");
+            }
+            if (dtart.description.trim() === "") {
+                throw new logicexception_1.LogicException("The description cannot be empty");
+            }
+            if (dtart.img.trim() === "") {
+                throw new logicexception_1.LogicException("The img cannot be empty");
+            }
+            if (!(dtart.img.trim().match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/))) {
                 throw new logicexception_1.LogicException("Only images files are allowed");
             }
             if (dtart.name.trim() === "") {
@@ -98,6 +143,12 @@ class LArticle {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.validateAddArticle(dtart);
             FactoryData_1.FactoryData.getDArticle().addArticle(dtart);
+        });
+    }
+    updateArticle(dtart) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.validateUpdateArticle(dtart);
+            FactoryData_1.FactoryData.getDArticle().updateArticle(dtart);
         });
     }
 }

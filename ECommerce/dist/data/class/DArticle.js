@@ -53,6 +53,26 @@ class DArticle {
             }
         });
     }
+    updateArticle(dtart) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let cn = yield Conection_1.Conexion.uri().connect();
+                let query = { _barcode: dtart.barcode };
+                var newvalues = { $set: { _name: dtart.name,
+                        _price: dtart.price,
+                        _img: dtart.img,
+                        _category: dtart.category,
+                        _description: dtart.description,
+                        _stock: dtart.stock } };
+                const coladvert = cn.db("ECommerce").collection("Article");
+                const result = yield coladvert.updateOne(query, newvalues);
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Article could not be updated" + e.message);
+            }
+        });
+    }
 }
 exports.DArticle = DArticle;
 //# sourceMappingURL=DArticle.js.map

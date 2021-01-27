@@ -67,7 +67,7 @@ export class Article
         this.price=pprice;
         this.stock=pstock;
         this.img=pimg;
-        this.category=pcategory
+        this.category=pcategory;
         this.description=pdescription;
     }
 }

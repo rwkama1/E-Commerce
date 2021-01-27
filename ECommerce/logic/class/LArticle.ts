@@ -2,6 +2,7 @@ import { FactoryData } from "../../data/FactoryData";
 import { Article } from "../../shared/entity/Article";
 import { LogicException } from "../../shared/exceptions/logicexception";
 import { ILArticle } from "../interfaces/ILArticle";
+import { LCategory } from "./LCategory";
 
 export class LArticle implements ILArticle {
 
@@ -25,14 +26,25 @@ export class LArticle implements ILArticle {
     private  async validateAddArticle(dtart:Article)
     {
         this.validateBarCode(dtart.barcode);
-        let objart = await this.getArticle(dtart.barcode);
+        if (dtart.category==null)
+        {
+            throw new LogicException("The Category is null");
+        }
+        var searobjcat=await LCategory.getInstance().getCategory(dtart.category.name);
+        if (searobjcat == null) {
+            throw new LogicException("That Category does not exists in the system");
+        }
+        
+        var objart = await this.getArticle(dtart.barcode);
+        if (objart != null) {
+            throw new LogicException("That Article already exists in the system");
+        }
         if (dtart == null)
         {
             throw new LogicException("The Article is empty ");
         }
-        if (objart != null) {
-            throw new LogicException("That Article already exists in the system");
-        }
+       
+       
         if (dtart.description.trim() === "")
         {
             throw new LogicException("The description cannot be empty");
@@ -41,7 +53,7 @@ export class LArticle implements ILArticle {
         {
             throw new LogicException("The img cannot be empty");
         }
-        if (dtart.img.trim().match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/))
+        if (!(dtart.img.trim().match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)))
         {
             throw new LogicException("Only images files are allowed");
         }
@@ -57,6 +69,55 @@ export class LArticle implements ILArticle {
         {
             throw new LogicException("The stock must be greater than 0");
         }
+       
+        
+
+    }
+    private  async validateUpdateArticle(dtart:Article)
+    {
+        this.validateBarCode(dtart.barcode);
+        if (dtart.category==null)
+        {
+            throw new LogicException("The Category is null");
+        }
+        var searobjcat=await LCategory.getInstance().getCategory(dtart.category.name);
+        if (searobjcat == null) {
+            throw new LogicException("That Category does not exists in the system");
+        }
+        var objart = await this.getArticle(dtart.barcode);
+        if (objart == null) {
+            throw new LogicException("That Article does not exists in the system");
+        }
+        if (dtart == null)
+        {
+            throw new LogicException("The Article is empty ");
+        }
+     
+        if (dtart.description.trim() === "")
+        {
+            throw new LogicException("The description cannot be empty");
+        }
+        if (dtart.img.trim() === "")
+        {
+            throw new LogicException("The img cannot be empty");
+        }
+        if (!(dtart.img.trim().match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)))
+        {
+            throw new LogicException("Only images files are allowed");
+        }
+        if (dtart.name.trim() === "")
+        {
+            throw new LogicException("The name cannot be empty");
+        }
+        if (dtart.price<1)
+        {
+            throw new LogicException("The price must be greater than 0");
+        }
+        if (dtart.stock<1)
+        {
+            throw new LogicException("The stock must be greater than 0");
+        }
+       
         
 
     }
@@ -102,10 +163,11 @@ export class LArticle implements ILArticle {
         await this.validateAddArticle(dtart);
         FactoryData.getDArticle().addArticle(dtart);
     }
-    // public async updateCategory(dtcategory: Category) {
-    //     await this.validateUpdateCategory(dtcategory);
-    //     FactoryData.getDCategory().updateCategory(dtcategory);
-    // }
+    public async updateArticle(dtart: Article) {
+        await this.validateUpdateArticle(dtart);
+        FactoryData.getDArticle().updateArticle(dtart);
+    }
+    
     // public async deleteCategory(dtcategory: Category) {
     //     await this.validateDeleteCategory(dtcategory);
     //     FactoryData.getDCategory().deleteCategory(dtcategory);
