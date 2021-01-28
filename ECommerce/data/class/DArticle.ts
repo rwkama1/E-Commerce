@@ -1,4 +1,5 @@
 import { Article } from "../../shared/entity/Article";
+import { Category } from "../../shared/entity/Category";
 import { DataException } from "../../shared/exceptions/dataexception";
 import { Conexion } from "../Conection";
 import { IDArticle } from "../interfaces/IDArticle";
@@ -107,7 +108,7 @@ export class DArticle implements IDArticle {
         }
 
     }
-   
+   //****************************************** */
     public async getArticlesByNameLetter(expression: string) {
    
         try {
@@ -167,6 +168,60 @@ export class DArticle implements IDArticle {
             let cn = await Conexion.uri().connect();
             const collection = cn.db("ECommerce").collection("Article");
             const result = await collection.find({}).sort({ _price : 1 }).toArray();
+
+            let array = [];
+            for (var article of result) {
+                var artobj = new Article(article._barcode,
+                    article._name,article._price,article._stock,article._description,article._img,
+                    article._category
+                   );
+                   array.push(artobj);
+            }
+
+            return array;
+            cn.close();
+
+        }
+        catch (e) {
+            throw new DataException("Articles could not be listed" + e.message);
+        }
+
+    }
+    public async orderArticlesbyCategory() {
+      
+
+        try {
+            
+            let cn = await Conexion.uri().connect();
+            const collection = cn.db("ECommerce").collection("Article");
+            const result = await collection.find({}).sort({ _category : 1 }).toArray();
+
+            let array = [];
+            for (var article of result) {
+                var artobj = new Article(article._barcode,
+                    article._name,article._price,article._stock,article._description,article._img,
+                    article._category
+                   );
+                   array.push(artobj);
+            }
+
+            return array;
+            cn.close();
+
+        }
+        catch (e) {
+            throw new DataException("Articles could not be listed" + e.message);
+        }
+
+    }
+    public async filterArticlesbyCategory(category:Category) {
+      
+
+        try {
+            
+            let cn = await Conexion.uri().connect();
+            const collection = cn.db("ECommerce").collection("Article");
+            const result = await collection.find({ _category : category }).toArray();
 
             let array = [];
             for (var article of result) {

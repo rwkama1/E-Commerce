@@ -1,4 +1,5 @@
 import { Article } from "../../shared/entity/Article";
+import { Category } from "../../shared/entity/Category";
 
 export interface ILArticle {
     getArticle(barcode: string) ;
@@ -8,6 +9,8 @@ export interface ILArticle {
     registerStock(barcode: string,quantity:number) ;
     getArticlesByNameLetter(expression: string) ;
     orderArticlesbyPrice();
+    orderArticlesbyCategory();
     getArticles() ;
+    filterArticlesbyCategory(cat:Category);
    
 }

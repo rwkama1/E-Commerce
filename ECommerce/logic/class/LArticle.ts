@@ -1,5 +1,6 @@
 import { FactoryData } from "../../data/FactoryData";
 import { Article } from "../../shared/entity/Article";
+import { Category } from "../../shared/entity/Category";
 import { LogicException } from "../../shared/exceptions/logicexception";
 import { ILArticle } from "../interfaces/ILArticle";
 import { LCategory } from "./LCategory";
@@ -187,5 +188,15 @@ export class LArticle implements ILArticle {
         var list = await FactoryData.getDArticle().orderArticlesbyPrice();
          return list;
       }
+      public async  orderArticlesbyCategory()  {
+        var list = await FactoryData.getDArticle().orderArticlesbyCategory();
+         return list;
+      }
+      public async  filterArticlesbyCategory(cat:Category)  {
+          var searchcat=await LCategory.getInstance().getCategory(cat.name);
+          var list = await FactoryData.getDArticle().filterArticlesbyCategory(searchcat);
+         return list;
+      }
+     
 
     }

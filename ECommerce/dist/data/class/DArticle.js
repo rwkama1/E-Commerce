@@ -104,6 +104,7 @@ class DArticle {
             }
         });
     }
+    //****************************************** */
     getArticlesByNameLetter(expression) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -149,6 +150,44 @@ class DArticle {
                 let cn = yield Conection_1.Conexion.uri().connect();
                 const collection = cn.db("ECommerce").collection("Article");
                 const result = yield collection.find({}).sort({ _price: 1 }).toArray();
+                let array = [];
+                for (var article of result) {
+                    var artobj = new Article_1.Article(article._barcode, article._name, article._price, article._stock, article._description, article._img, article._category);
+                    array.push(artobj);
+                }
+                return array;
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Articles could not be listed" + e.message);
+            }
+        });
+    }
+    orderArticlesbyCategory() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let cn = yield Conection_1.Conexion.uri().connect();
+                const collection = cn.db("ECommerce").collection("Article");
+                const result = yield collection.find({}).sort({ _category: 1 }).toArray();
+                let array = [];
+                for (var article of result) {
+                    var artobj = new Article_1.Article(article._barcode, article._name, article._price, article._stock, article._description, article._img, article._category);
+                    array.push(artobj);
+                }
+                return array;
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Articles could not be listed" + e.message);
+            }
+        });
+    }
+    filterArticlesbyCategory(category) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let cn = yield Conection_1.Conexion.uri().connect();
+                const collection = cn.db("ECommerce").collection("Article");
+                const result = yield collection.find({ _category: category }).toArray();
                 let array = [];
                 for (var article of result) {
                     var artobj = new Article_1.Article(article._barcode, article._name, article._price, article._stock, article._description, article._img, article._category);

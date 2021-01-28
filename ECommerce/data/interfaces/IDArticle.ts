@@ -1,4 +1,5 @@
 import { Article } from "../../shared/entity/Article";
+import { Category } from "../../shared/entity/Category";
 
 export interface IDArticle {
 
@@ -10,5 +11,7 @@ export interface IDArticle {
     getArticlesByNameLetter(expression: string);
     getArticles();
     orderArticlesbyPrice();
+    orderArticlesbyCategory();
+    filterArticlesbyCategory(category:Category);
     
 }

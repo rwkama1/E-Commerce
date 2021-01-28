@@ -178,6 +178,19 @@ class LArticle {
             return list;
         });
     }
+    orderArticlesbyCategory() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var list = yield FactoryData_1.FactoryData.getDArticle().orderArticlesbyCategory();
+            return list;
+        });
+    }
+    filterArticlesbyCategory(cat) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var searchcat = yield LCategory_1.LCategory.getInstance().getCategory(cat.name);
+            var list = yield FactoryData_1.FactoryData.getDArticle().filterArticlesbyCategory(searchcat);
+            return list;
+        });
+    }
 }
 exports.LArticle = LArticle;
 //# sourceMappingURL=LArticle.js.map
