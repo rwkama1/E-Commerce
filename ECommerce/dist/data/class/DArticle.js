@@ -62,14 +62,103 @@ class DArticle {
                         _price: dtart.price,
                         _img: dtart.img,
                         _category: dtart.category,
-                        _description: dtart.description,
-                        _stock: dtart.stock } };
+                        _description: dtart.description
+                    } };
                 const coladvert = cn.db("ECommerce").collection("Article");
                 const result = yield coladvert.updateOne(query, newvalues);
                 cn.close();
             }
             catch (e) {
                 throw new dataexception_1.DataException("Article could not be updated" + e.message);
+            }
+        });
+    }
+    deleteArticle(dtart) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let cn = yield Conection_1.Conexion.uri().connect();
+                let query = { _barcode: dtart.barcode };
+                const colcat = cn.db("ECommerce").collection("Article");
+                const result = yield colcat.deleteOne(query);
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Article could not be deleted" + e.message);
+            }
+        });
+    }
+    updateStock(dtart) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let cn = yield Conection_1.Conexion.uri().connect();
+                let query = { _barcode: dtart.barcode };
+                var newvalues = { $set: {
+                        _stock: dtart.stock
+                    } };
+                const coladvert = cn.db("ECommerce").collection("Article");
+                const result = yield coladvert.updateOne(query, newvalues);
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Article could not be updated" + e.message);
+            }
+        });
+    }
+    getArticlesByNameLetter(expression) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                var cn = yield Conection_1.Conexion.uri().connect();
+                var query = { _name: { $regex: expression } };
+                const collection = cn.db("ECommerce").collection("Article");
+                const result = yield collection.find(query).toArray();
+                let array = [];
+                for (var article of result) {
+                    var artobj = new Article_1.Article(article._barcode, article._name, article._price, article._stock, article._description, article._img, article._category);
+                    array.push(artobj);
+                }
+                return array;
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Articles could not be listed" + e.message);
+            }
+        });
+    }
+    getArticles() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let cn = yield Conection_1.Conexion.uri().connect();
+                const collection = cn.db("ECommerce").collection("Article");
+                const result = yield collection.find({}).toArray();
+                let array = [];
+                for (var article of result) {
+                    var artobj = new Article_1.Article(article._barcode, article._name, article._price, article._stock, article._description, article._img, article._category);
+                    array.push(artobj);
+                }
+                return array;
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Articles could not be listed" + e.message);
+            }
+        });
+    }
+    orderArticlesbyPrice() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let cn = yield Conection_1.Conexion.uri().connect();
+                const collection = cn.db("ECommerce").collection("Article");
+                const result = yield collection.find({}).sort({ _price: 1 }).toArray();
+                let array = [];
+                for (var article of result) {
+                    var artobj = new Article_1.Article(article._barcode, article._name, article._price, article._stock, article._description, article._img, article._category);
+                    array.push(artobj);
+                }
+                return array;
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Articles could not be listed" + e.message);
             }
         });
     }

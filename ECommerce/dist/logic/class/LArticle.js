@@ -102,34 +102,23 @@ class LArticle {
             }
         });
     }
-    // private  async validateUpdateCategory(dtcat:Category)
-    // {
-    //     this.validateName(dtcat.name);
-    //     let objsearchcat = await this.getCategory(dtcat.name);
-    //     if (dtcat == null)
-    //     {
-    //         throw new LogicException("The Category is empty ");
-    //     }
-    //     if (objsearchcat == null) {
-    //         throw new LogicException("That Category does not exists in the system");
-    //     }
-    //     if (dtcat.description.trim() === "")
-    //     {
-    //         throw new LogicException("The description cannot be empty");
-    //     }
-    // }
-    // private  async validateDeleteCategory(dtcat:Category)
-    // {
-    //     this.validateName(dtcat.name);
-    //     let objsearchcat = await this.getCategory(dtcat.name);
-    //     if (dtcat === null)
-    //     {
-    //         throw new LogicException("The Category is empty ");
-    //     }
-    //     if (objsearchcat === null) {
-    //         throw new LogicException("That Category does not exists in the system");
-    //     }
-    // }
+    validateDeleteArticle(dtart) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.validateBarCode(dtart.barcode);
+            let sobjart = yield this.getArticle(dtart.barcode);
+            if (dtart == null) {
+                throw new logicexception_1.LogicException("The Article is empty ");
+            }
+            if (sobjart == null) {
+                throw new logicexception_1.LogicException("That Article does not exists in the system");
+            }
+        });
+    }
+    validateStock(quantity) {
+        if (quantity < 1) {
+            throw new logicexception_1.LogicException("The quantity must be greater than 0");
+        }
+    }
     //*********************************************** */
     //Functions
     getArticle(barcode) {
@@ -149,6 +138,44 @@ class LArticle {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.validateUpdateArticle(dtart);
             FactoryData_1.FactoryData.getDArticle().updateArticle(dtart);
+        });
+    }
+    deleteArticle(dtart) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.validateDeleteArticle(dtart);
+            FactoryData_1.FactoryData.getDArticle().deleteArticle(dtart);
+        });
+    }
+    registerStock(barcode, quantity) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.validateStock(quantity);
+            var searcharticle = yield this.getArticle(barcode);
+            if (searcharticle == null) {
+                throw new logicexception_1.LogicException("That Article does not exists in the system");
+            }
+            searcharticle.stock += quantity;
+            FactoryData_1.FactoryData.getDArticle().updateStock(searcharticle);
+        });
+    }
+    getArticlesByNameLetter(expression) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (expression === undefined) {
+                return this.getArticles();
+            }
+            var listexp = yield FactoryData_1.FactoryData.getDArticle().getArticlesByNameLetter(expression);
+            return listexp;
+        });
+    }
+    getArticles() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var list = yield FactoryData_1.FactoryData.getDArticle().getArticles();
+            return list;
+        });
+    }
+    orderArticlesbyPrice() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var list = yield FactoryData_1.FactoryData.getDArticle().orderArticlesbyPrice();
+            return list;
         });
     }
 }

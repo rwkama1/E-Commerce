@@ -58,8 +58,8 @@ export class DArticle implements IDArticle {
                 _price: dtart.price,
                 _img: dtart.img,
                 _category: dtart.category,
-                _description: dtart.description,
-                _stock: dtart.stock } };
+                _description: dtart.description
+               } };
             const coladvert = cn.db("ECommerce").collection("Article");
             const result = await coladvert.updateOne(query,newvalues);
 
@@ -72,69 +72,119 @@ export class DArticle implements IDArticle {
         }
 
     }
+    public async deleteArticle(dtart: Article) {
+        try {
 
-    // public async deleteCategory(dtcat: Category) {
-    //     try {
+            let cn = await Conexion.uri().connect();
+            let query = { _barcode: dtart.barcode };
+            const colcat = cn.db("ECommerce").collection("Article");
+            const result = await colcat.deleteOne(query);
+            cn.close();
 
-    //         let cn = await Conexion.uri().connect();
-    //         let query = { _name: dtcat.name };
-    //         const colcat = cn.db("ECommerce").collection("Category");
-    //         const result = await colcat.deleteOne(query);
-    //         cn.close();
+        }
+        catch (e) {
+            throw new DataException("Article could not be deleted" + e.message);
+        }
 
-    //     }
-    //     catch (e) {
-    //         throw new DataException("Category could not be deleted" + e.message);
-    //     }
+    }
+    public async updateStock(dtart: Article) {
+        try {
 
-    // }
+            let cn = await Conexion.uri().connect();
+            let query = { _barcode: dtart.barcode };
+            var newvalues = { $set: { 
+                _stock: dtart.stock
+               } };
+            const coladvert = cn.db("ECommerce").collection("Article");
+            const result = await coladvert.updateOne(query,newvalues);
+
+
+            cn.close();
+
+        }
+        catch (e) {
+            throw new DataException("Article could not be updated" + e.message);
+        }
+
+    }
    
-    // public async getCategorysByNameLetter(expression: string) {
+    public async getArticlesByNameLetter(expression: string) {
    
-    //     try {
-    //         var cn = await Conexion.uri().connect();
-    //         var query = { _name: { $regex: expression } }
-    //         const collection = cn.db("ECommerce").collection("Category");
-    //         const result = await collection.find(query).toArray();
+        try {
+            var cn = await Conexion.uri().connect();
+            var query = { _name: { $regex: expression } }
+            const collection = cn.db("ECommerce").collection("Article");
+            const result = await collection.find(query).toArray();
     
-    //         let array = [];
-    //         for (var p of result) {
-    //             var obj = new Category(p._name,p._description)
-    //             array.push(obj);
-    //         }
+            let array = [];
+            for (var article of result) {
+                var artobj = new Article(article._barcode,
+                    article._name,article._price,article._stock,article._description,article._img,
+                    article._category
+                   );
+                   array.push(artobj);
+            }
     
-    //         return array;
-    //         cn.close();
+            return array;
+            cn.close();
     
-    //     }
-    //     catch (e) {
-    //         throw new DataException("Category could not be listed" + e.message);
-    //     }
+        }
+        catch (e) {
+            throw new DataException("Articles could not be listed" + e.message);
+        }
     
-    // }
-    // public async getCategories() {
+    }
+    public async getArticles() {
       
 
-    //     try {
-    //         let cn = await Conexion.uri().connect();
-    //         const collection = cn.db("ECommerce").collection("Category");
-    //         const result = await collection.find({}).toArray();
+        try {
+            let cn = await Conexion.uri().connect();
+            const collection = cn.db("ECommerce").collection("Article");
+            const result = await collection.find({}).toArray();
 
-    //         let array = [];
-    //         for (var p of result) {
-    //             var obj = new Category(p._name,p._description)
-    //             array.push(obj);
-    //         }
+            let array = [];
+            for (var article of result) {
+                var artobj = new Article(article._barcode,
+                    article._name,article._price,article._stock,article._description,article._img,
+                    article._category
+                   );
+                   array.push(artobj);
+            }
 
-    //         return array;
-    //         cn.close();
+            return array;
+            cn.close();
 
-    //     }
-    //     catch (e) {
-    //         throw new DataException("Categories could not be listed" + e.message);
-    //     }
+        }
+        catch (e) {
+            throw new DataException("Articles could not be listed" + e.message);
+        }
 
-    // }
-    
+    }
+    public async orderArticlesbyPrice() {
+      
+
+        try {
+            let cn = await Conexion.uri().connect();
+            const collection = cn.db("ECommerce").collection("Article");
+            const result = await collection.find({}).sort({ _price : 1 }).toArray();
+
+            let array = [];
+            for (var article of result) {
+                var artobj = new Article(article._barcode,
+                    article._name,article._price,article._stock,article._description,article._img,
+                    article._category
+                   );
+                   array.push(artobj);
+            }
+
+            return array;
+            cn.close();
+
+        }
+        catch (e) {
+            throw new DataException("Articles could not be listed" + e.message);
+        }
+
+    }
     
 }

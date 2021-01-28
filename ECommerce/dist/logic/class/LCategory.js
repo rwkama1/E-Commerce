@@ -98,7 +98,7 @@ class LCategory {
     getCategorysByNameLetter(expression) {
         return __awaiter(this, void 0, void 0, function* () {
             if (expression === undefined) {
-                return FactoryData_1.FactoryData.getDCategory().getCategories();
+                return this.getCategories();
             }
             var listexp = yield FactoryData_1.FactoryData.getDCategory().getCategorysByNameLetter(expression);
             return listexp;

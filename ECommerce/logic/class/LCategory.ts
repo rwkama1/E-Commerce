@@ -91,7 +91,7 @@ export class LCategory implements ILCategory {
     }
     public async getCategorysByNameLetter(expression: string)  {
         if(expression===undefined)
-           {return FactoryData.getDCategory().getCategories();}
+           {return this.getCategories();}
       var listexp = await FactoryData.getDCategory().getCategorysByNameLetter(expression);
        return listexp;
     }

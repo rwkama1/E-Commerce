@@ -121,42 +121,33 @@ export class LArticle implements ILArticle {
         
 
     }
-    // private  async validateUpdateCategory(dtcat:Category)
-    // {
-    //     this.validateName(dtcat.name);
-    //     let objsearchcat = await this.getCategory(dtcat.name);
-    //     if (dtcat == null)
-    //     {
-    //         throw new LogicException("The Category is empty ");
-    //     }
-    //     if (objsearchcat == null) {
-    //         throw new LogicException("That Category does not exists in the system");
-    //     }
-    //     if (dtcat.description.trim() === "")
-    //     {
-    //         throw new LogicException("The description cannot be empty");
-    //     }
-
-
-    // }
-    // private  async validateDeleteCategory(dtcat:Category)
-    // {
-    //     this.validateName(dtcat.name);
-    //     let objsearchcat = await this.getCategory(dtcat.name);
-    //     if (dtcat === null)
-    //     {
-    //         throw new LogicException("The Category is empty ");
-    //     }
-    //     if (objsearchcat === null) {
-    //         throw new LogicException("That Category does not exists in the system");
-    //     }
-    // }
+    private  async validateDeleteArticle(dtart:Article)
+    {
+        this.validateBarCode(dtart.barcode);
+        let sobjart = await this.getArticle(dtart.barcode);
+        if (dtart == null)
+        {
+            throw new LogicException("The Article is empty ");
+        }
+        if (sobjart == null) {
+            throw new LogicException("That Article does not exists in the system");
+        }
+    }
+    private  validateStock(quantity:number)
+    {
+        if (quantity<1)
+        {
+            throw new LogicException("The quantity must be greater than 0");
+        }
+       
+    }
+   
+    
     //*********************************************** */
     //Functions
     public async getArticle(barcode: string) {
         this.validateBarCode(barcode);
         var sarticle = await FactoryData.getDArticle().getArticle(barcode);
-
         return sarticle
     }
     public async addArticle(dtart: Article) {
@@ -168,19 +159,33 @@ export class LArticle implements ILArticle {
         FactoryData.getDArticle().updateArticle(dtart);
     }
     
-    // public async deleteCategory(dtcategory: Category) {
-    //     await this.validateDeleteCategory(dtcategory);
-    //     FactoryData.getDCategory().deleteCategory(dtcategory);
-    // }
-    // public async getCategorysByNameLetter(expression: string)  {
-    //     if(expression===undefined)
-    //        {return FactoryData.getDCategory().getCategories();}
-    //   var listexp = await FactoryData.getDCategory().getCategorysByNameLetter(expression);
-    //    return listexp;
-    // }
-    // public async getCategories()  {
-    //     var list = await FactoryData.getDCategory().getCategories();
-    //      return list;
-    //   }
+    public async deleteArticle(dtart: Article) {
+        await this.validateDeleteArticle(dtart);
+        FactoryData.getDArticle().deleteArticle(dtart);
+    }
+    public async registerStock(barcode: string,quantity:number) {
+        this.validateStock(quantity);
+        var searcharticle= await this.getArticle(barcode);
+        if(searcharticle==null)
+        {
+            throw new LogicException("That Article does not exists in the system");
+        }
+        searcharticle.stock += quantity;
+        FactoryData.getDArticle().updateStock(searcharticle);
+    }
+    public async getArticlesByNameLetter(expression: string)  {
+        if(expression===undefined)
+           {return this.getArticles();}
+       var listexp = await FactoryData.getDArticle().getArticlesByNameLetter(expression);
+       return listexp;
+    }
+    public async getArticles()  {
+        var list = await FactoryData.getDArticle().getArticles();
+         return list;
+      }
+      public async orderArticlesbyPrice()  {
+        var list = await FactoryData.getDArticle().orderArticlesbyPrice();
+         return list;
+      }
 
     }
