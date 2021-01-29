@@ -13,7 +13,7 @@ export class Administrator extends User
 
     constructor(pidentitycard:string,pcompletename:string,ppasword:string,pusername:string,pposition:string)
     {
-        super(pidentitycard,pcompletename,ppasword,pusername)
+        super(pidentitycard,pcompletename,ppasword,pusername);
         this.position=pposition;
         
     }

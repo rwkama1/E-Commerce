@@ -21,7 +21,7 @@ export class Client extends User
       
     constructor(pidentitycard:string,pcompletename:string,ppasword:string,pusername:string,pshippingaddress:string,pcreditcard:string)
     {
-        super(pidentitycard,pcompletename,ppasword,pusername)
+        super(pidentitycard,pcompletename,ppasword,pusername);
         this.shippingaddress=pshippingaddress;
         this.creditcardnumber=pcreditcard;
     }

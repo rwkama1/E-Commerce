@@ -20,6 +20,7 @@
     "typescript": "^3.2.2"
   },
   "dependencies": {
-    "mongodb": "3.6.3"
+    "mongodb": "3.6.3",
+    "bcrypt": "5.0.0"
   }
 }
