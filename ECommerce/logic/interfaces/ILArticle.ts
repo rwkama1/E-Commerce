@@ -7,6 +7,7 @@ export interface ILArticle {
     deleteArticle(dtart: Article);
     updateArticle(dtart: Article);
     registerStock(barcode: string,quantity:number) ;
+    deStock(barcode: string,quantity:number);
     getArticlesByNameLetter(expression: string) ;
     orderArticlesbyPrice();
     orderArticlesbyCategory();

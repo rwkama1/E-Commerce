@@ -157,6 +157,17 @@ class LArticle {
             FactoryData_1.FactoryData.getDArticle().updateStock(searcharticle);
         });
     }
+    deStock(barcode, quantity) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.validateStock(quantity);
+            var searcharticle = yield this.getArticle(barcode);
+            if (searcharticle == null) {
+                throw new logicexception_1.LogicException("That Article does not exists in the system");
+            }
+            searcharticle.stock -= quantity;
+            FactoryData_1.FactoryData.getDArticle().updateStock(searcharticle);
+        });
+    }
     getArticlesByNameLetter(expression) {
         return __awaiter(this, void 0, void 0, function* () {
             if (expression === undefined) {

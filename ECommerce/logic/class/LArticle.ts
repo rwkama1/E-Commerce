@@ -174,6 +174,16 @@ export class LArticle implements ILArticle {
         searcharticle.stock += quantity;
         FactoryData.getDArticle().updateStock(searcharticle);
     }
+    public async deStock(barcode: string,quantity:number) {
+        this.validateStock(quantity);
+        var searcharticle= await this.getArticle(barcode);
+        if(searcharticle==null)
+        {
+            throw new LogicException("That Article does not exists in the system");
+        }
+        searcharticle.stock -= quantity;
+        FactoryData.getDArticle().updateStock(searcharticle);
+    }
     public async getArticlesByNameLetter(expression: string)  {
         if(expression===undefined)
            {return this.getArticles();}
