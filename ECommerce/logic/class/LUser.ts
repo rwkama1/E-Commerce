@@ -3,7 +3,8 @@ import { Client } from "../../shared/entity/Client";
 import { User } from "../../shared/entity/User";
 import { LogicException } from "../../shared/exceptions/logicexception";
 import { ILUser } from "../interfaces/ILUser";
- const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
+
 
 export class LUser implements ILUser {
 
@@ -19,6 +20,10 @@ export class LUser implements ILUser {
      //Validations************************************
      private validateIdCard(idcard: string)
      {
+        var numbers = /^[0-9]+$/;
+         if (!idcard.trim().match(numbers)) {
+                throw new LogicException("The identity card must have only numbers");
+            }
          if (idcard.trim() === "") {
              throw new LogicException("The identity card cannot be empty");
          }
@@ -51,6 +56,24 @@ export class LUser implements ILUser {
         {
             throw new LogicException("The password cannot be empty");
         }
+         if (dtuser instanceof Client) 
+         {
+            let client = dtuser as Client;
+            var numbers = /^[0-9]+$/;
+           
+
+            if (!client.creditcardnumber.trim().match(numbers)) {
+                throw new LogicException("The credit card number must have only numbers");
+            }
+            if (client.creditcardnumber.trim() === "") {
+                throw new LogicException("The credit card number cannot be empty");
+            }
+            if (client.shippingaddress.trim() === "") {
+                throw new LogicException("The shipping address cannot be empty");
+            }
+
+         }
+
          this.validateIdCard(dtuser.identitycard);
          this.validateUserName(dtuser.username);
          let idcardsearch = await this.getUser(dtuser.identitycard);
@@ -61,6 +84,45 @@ export class LUser implements ILUser {
          if (usernamesearch != null) {
             throw new LogicException("That User Name already exists in the system");
         }
+    
+     }
+     private  async validateUpdateUser(dtuser:User)
+     {
+        if (dtuser == null)
+        {
+            throw new LogicException("The User is empty ");
+        }
+        if (dtuser.completename.trim() === "")
+        {
+            throw new LogicException("The complete name cannot be empty");
+        }
+        if (dtuser.password.trim() === "")
+        {
+            throw new LogicException("The password cannot be empty");
+        }
+         if (dtuser instanceof Client) 
+         {
+            let client = dtuser as Client;
+            var numbers = /^[0-9]+$/;
+            if (!client.creditcardnumber.trim().match(numbers)) {
+                throw new LogicException("The credit card number must have only numbers");
+            }
+            if (client.creditcardnumber.trim() === "") {
+                throw new LogicException("The credit card number cannot be empty");
+            }
+            if (client.shippingaddress.trim() === "") {
+                throw new LogicException("The shipping address cannot be empty");
+            }
+
+         }
+
+         this.validateIdCard(dtuser.identitycard);
+      
+         let idcardsearch = await this.getUser(dtuser.identitycard);
+         if (idcardsearch == null) {
+             throw new LogicException("That User does not exists in the system");
+         }
+        
     
      }
      //********************************************** */
@@ -85,6 +147,18 @@ export class LUser implements ILUser {
         if (dtuser instanceof Client)
         {
             FactoryData.getDClient().addClient(dtuser);
+        }
+       
+      
+    }
+    public async updateUser(dtuser: User) {
+
+        await this.validateUpdateUser(dtuser);
+        var hashedpassword=await bcrypt.hash(dtuser.password,5);
+        dtuser.password=hashedpassword;
+        if (dtuser instanceof Client)
+        {
+            FactoryData.getDClient().updateClient(dtuser);
         }
        
       

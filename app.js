@@ -6,7 +6,7 @@ var dtcat = new Category("Monitor", "Teléfono portátil que puede hacer o recib
 // var dtart=new Article("12345678909898","Monitor Led 19.5' Hd Kolke Entradas Hdmi Y Vga Loi",,10,
 // "Disfrutá de una buena calidad de imagen con este monitor Kolke KES-459 que cuenta con una pantalla LED de 19.5 y una resolución de 1366 x 768. Puede inclinarse 5° hacia adelante y 15° hacia atrás.",
 // "gdsg.gif",dtcat);
-var dtclient = new Client("827289551",'Client1',"rwkama123","rwkama","Address 111 ","375259829079721");
+var dtclient = new Client("828895551",'Client1',"rwkama2","rwkama4","Address 111 ","375259829079721");
 //***************************************************************
 //CATEGORIES
 
@@ -27,8 +27,8 @@ var dtclient = new Client("827289551",'Client1',"rwkama123","rwkama","Address 11
 //********************************************************************************** */
 //ARTICLES
 
-// FactoryLogic.getLCategory().getCategory(dtcat.name).then(scat => {
-//     console.log(scat);
+// FactoryLogc.getLCategory().getCategory(dtcat.name).then(scat => {
+//     console.ilog(scat);
 //    var dtart=new Article("45687945345387","Monitor Samsung Curvo 24 Pulgadas Gamer Freesync Cf390 - Bde",184,23,
 // "Monitor Samsung Curvo 24 Pulgadas Gamer Freesync Cf390 - Bde Black Dog Electronics",
 // "monitorsm.jpg",scat);
@@ -74,12 +74,16 @@ var dtclient = new Client("827289551",'Client1',"rwkama123","rwkama","Address 11
 // });
 //********************************************************************************** */
 //USER
-FactoryLogic.getLUser().addUser(dtclient).then(data => {
-    console.log(data);
-});
-// FactoryLogic.getLUser().loginUser("Client3","Client").then(data => {
+// FactoryLogic.getLUser().addUser(dtclient).then(data => {
 //     console.log(data);
 // });
+// FactoryLogic.getLUser().loginUser("rwkama4","rwkama2").then(data => {
+//     console.log(data);
+// });
+// FactoryLogic.getLUser().updateUser(dtclient).then(data => {
+//     console.log(data);
+// });
+
 
 
 

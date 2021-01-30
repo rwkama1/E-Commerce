@@ -5,6 +5,7 @@ export interface ILUser {
     getUserByusername(username: string);
     getUser(idcard: string) ;
     loginUser(username:string,password:string);
+    updateUser(dtuser: User);
     // getArticle(barcode: string) ;
     // addArticle(dtart: User);
 }

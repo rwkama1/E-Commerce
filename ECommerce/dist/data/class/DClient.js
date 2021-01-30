@@ -72,6 +72,25 @@ class DClient {
             }
         });
     }
+    updateClient(dtclient) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let cn = yield Conection_1.Conexion.uri().connect();
+                let query = { _identitycard: dtclient.identitycard };
+                var newvalues = { $set: { _completename: dtclient.completename,
+                        _password: dtclient.password,
+                        _shippingaddress: dtclient.shippingaddress,
+                        _creditcardnumber: dtclient.creditcardnumber,
+                    } };
+                const coladvert = cn.db("ECommerce").collection("Client");
+                const result = yield coladvert.updateOne(query, newvalues);
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Client could not be updated" + e.message);
+            }
+        });
+    }
 }
 exports.DClient = DClient;
 //# sourceMappingURL=DClient.js.map

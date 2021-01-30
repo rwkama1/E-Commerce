@@ -76,31 +76,30 @@ export class DClient implements IDClient {
             throw new DataException("Client could not be searched");
         }
 
+    }  
+    public async updateClient(dtclient: Client) {
+        try {
+
+            let cn = await Conexion.uri().connect();
+            let query = { _identitycard:dtclient.identitycard };
+            var newvalues = { $set: { _completename: dtclient.completename,
+                _password: dtclient.password,
+                _shippingaddress: dtclient.shippingaddress,
+                _creditcardnumber: dtclient.creditcardnumber,
+                
+               } };
+            const coladvert = cn.db("ECommerce").collection("Client");
+            const result = await coladvert.updateOne(query,newvalues);
+
+
+            cn.close();
+
+        }
+        catch (e) {
+            throw new DataException("Client could not be updated" + e.message);
+        }
+
     }
-    
-    // public async updateArticle(dtart: Article) {
-    //     try {
-
-    //         let cn = await Conexion.uri().connect();
-    //         let query = { _barcode: dtart.barcode };
-    //         var newvalues = { $set: { _name: dtart.name,
-    //             _price: dtart.price,
-    //             _img: dtart.img,
-    //             _category: dtart.category,
-    //             _description: dtart.description
-    //            } };
-    //         const coladvert = cn.db("ECommerce").collection("Article");
-    //         const result = await coladvert.updateOne(query,newvalues);
-
-
-    //         cn.close();
-
-    //     }
-    //     catch (e) {
-    //         throw new DataException("Article could not be updated" + e.message);
-    //     }
-
-    // }
     // public async deleteArticle(dtart: Article) {
     //     try {
 

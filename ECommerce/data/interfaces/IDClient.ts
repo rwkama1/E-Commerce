@@ -5,5 +5,6 @@ export interface IDClient {
     addClient(dtclient: Client);
     getClient(idcard:string);
     getClientbyusername(username:string);
+    updateClient(dtclient: Client);
   
 }

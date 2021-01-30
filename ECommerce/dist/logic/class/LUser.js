@@ -24,6 +24,10 @@ class LUser {
     }
     //Validations************************************
     validateIdCard(idcard) {
+        var numbers = /^[0-9]+$/;
+        if (!idcard.trim().match(numbers)) {
+            throw new logicexception_1.LogicException("The identity card must have only numbers");
+        }
         if (idcard.trim() === "") {
             throw new logicexception_1.LogicException("The identity card cannot be empty");
         }
@@ -50,6 +54,19 @@ class LUser {
             if (dtuser.password.trim() === "") {
                 throw new logicexception_1.LogicException("The password cannot be empty");
             }
+            if (dtuser instanceof Client_1.Client) {
+                let client = dtuser;
+                var numbers = /^[0-9]+$/;
+                if (!client.creditcardnumber.trim().match(numbers)) {
+                    throw new logicexception_1.LogicException("The credit card number must have only numbers");
+                }
+                if (client.creditcardnumber.trim() === "") {
+                    throw new logicexception_1.LogicException("The credit card number cannot be empty");
+                }
+                if (client.shippingaddress.trim() === "") {
+                    throw new logicexception_1.LogicException("The shipping address cannot be empty");
+                }
+            }
             this.validateIdCard(dtuser.identitycard);
             this.validateUserName(dtuser.username);
             let idcardsearch = yield this.getUser(dtuser.identitycard);
@@ -59,6 +76,37 @@ class LUser {
             let usernamesearch = yield this.getUserByusername(dtuser.username);
             if (usernamesearch != null) {
                 throw new logicexception_1.LogicException("That User Name already exists in the system");
+            }
+        });
+    }
+    validateUpdateUser(dtuser) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (dtuser == null) {
+                throw new logicexception_1.LogicException("The User is empty ");
+            }
+            if (dtuser.completename.trim() === "") {
+                throw new logicexception_1.LogicException("The complete name cannot be empty");
+            }
+            if (dtuser.password.trim() === "") {
+                throw new logicexception_1.LogicException("The password cannot be empty");
+            }
+            if (dtuser instanceof Client_1.Client) {
+                let client = dtuser;
+                var numbers = /^[0-9]+$/;
+                if (!client.creditcardnumber.trim().match(numbers)) {
+                    throw new logicexception_1.LogicException("The credit card number must have only numbers");
+                }
+                if (client.creditcardnumber.trim() === "") {
+                    throw new logicexception_1.LogicException("The credit card number cannot be empty");
+                }
+                if (client.shippingaddress.trim() === "") {
+                    throw new logicexception_1.LogicException("The shipping address cannot be empty");
+                }
+            }
+            this.validateIdCard(dtuser.identitycard);
+            let idcardsearch = yield this.getUser(dtuser.identitycard);
+            if (idcardsearch == null) {
+                throw new logicexception_1.LogicException("That User does not exists in the system");
             }
         });
     }
@@ -87,6 +135,16 @@ class LUser {
             dtuser.password = hashedpassword;
             if (dtuser instanceof Client_1.Client) {
                 FactoryData_1.FactoryData.getDClient().addClient(dtuser);
+            }
+        });
+    }
+    updateUser(dtuser) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.validateUpdateUser(dtuser);
+            var hashedpassword = yield bcrypt.hash(dtuser.password, 5);
+            dtuser.password = hashedpassword;
+            if (dtuser instanceof Client_1.Client) {
+                FactoryData_1.FactoryData.getDClient().updateClient(dtuser);
             }
         });
     }
