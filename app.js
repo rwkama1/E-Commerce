@@ -1,12 +1,12 @@
 const FactoryLogic = require("./ECommerce/dist/logic/FactoryLogic").FactoryLogic;
 const Category = require("./ECommerce/dist/shared/entity/Category").Category;
 const Article = require("./ECommerce/dist/shared/entity/Article").Article;
-
+const Client = require("./ECommerce/dist/shared/entity/Client").Client;
 var dtcat = new Category("Monitor", "Teléfono portátil que puede hacer o recibir llamadas a través de una portadora de radiofrecuencia, mientras el usuario se está moviendo dentro de un área de servicio telefónico");
 // var dtart=new Article("12345678909898","Monitor Led 19.5' Hd Kolke Entradas Hdmi Y Vga Loi",,10,
 // "Disfrutá de una buena calidad de imagen con este monitor Kolke KES-459 que cuenta con una pantalla LED de 19.5 y una resolución de 1366 x 768. Puede inclinarse 5° hacia adelante y 15° hacia atrás.",
 // "gdsg.gif",dtcat);
- 
+var dtclient = new Client("827289551",'Client1',"rwkama123","rwkama","Address 111 ","375259829079721");
 //***************************************************************
 //CATEGORIES
 
@@ -35,8 +35,8 @@ var dtcat = new Category("Monitor", "Teléfono portátil que puede hacer o recib
 //     FactoryLogic.getLArticle().addArticle(dtart).then(data => {
 //         console.log(data);
 //     });
-    
-    
+
+
 //  });
 
 // FactoryLogic.getLCategory().getCategory(dtcat.name).then(scat => {
@@ -47,18 +47,18 @@ var dtcat = new Category("Monitor", "Teléfono portátil que puede hacer o recib
 //     FactoryLogic.getLArticle().updateArticle(dtart).then(data => {
 //         console.log(data);
 //     });
-    
-    
+
+
 //  });
 
 // FactoryLogic.getLArticle().deleteArticle(dtart).then(scat => {
 //     console.log(scat);
-    
+
 // })
 
 // FactoryLogic.getLArticle().registerStock("12345678909898",1000).then(scat => {
 //     console.log(scat);
-    
+
 // });
 //  FactoryLogic.getLArticle().orderArticlesbyPrice().then(data => {
 //     console.log(data);
@@ -74,6 +74,12 @@ var dtcat = new Category("Monitor", "Teléfono portátil que puede hacer o recib
 // });
 //********************************************************************************** */
 //USER
+FactoryLogic.getLUser().addUser(dtclient).then(data => {
+    console.log(data);
+});
+// FactoryLogic.getLUser().loginUser("Client3","Client").then(data => {
+//     console.log(data);
+// });
 
 
 

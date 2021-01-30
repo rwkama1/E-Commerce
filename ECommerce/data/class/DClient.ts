@@ -3,6 +3,7 @@ import { DataException } from "../../shared/exceptions/dataexception";
 import { Conexion } from "../Conection";
 import { IDClient } from "../interfaces/IDClient";
 
+
 export class DClient implements IDClient {
 
     private static instancia: DClient;
@@ -35,12 +36,13 @@ export class DClient implements IDClient {
             const collection = cn.db("ECommerce").collection("Client");
             const client = await collection.findOne({_identitycard:idcard});
 
-            if (client == null) { return null; }
+            if (client == null) 
+            { return null; }
             cliobj = new Client(client._identitycard,
                 client._completename,client._password,client._username,client._shippingaddress,
-                client._category
+                client._creditcardnumber
                );
-            return client;
+            return cliobj;
             cn.close();
 
         }
@@ -49,6 +51,33 @@ export class DClient implements IDClient {
         }
 
     }
+    public async getClientbyusername(username:string) {
+
+        let cliobj= null;
+        try {
+            let cn = await Conexion.uri().connect();
+            const collection = cn.db("ECommerce").collection("Client");
+            const client = await collection.findOne({_username:username});
+
+            if (client == null) 
+            { return null; }
+           
+            cliobj = new Client(client._identitycard,
+                client._completename,client._password,
+                client._username,client._shippingaddress,
+                client._creditcardnumber
+               );
+           
+            return cliobj;
+            cn.close();
+
+        }
+        catch (e) {
+            throw new DataException("Client could not be searched");
+        }
+
+    }
+    
     // public async updateArticle(dtart: Article) {
     //     try {
 

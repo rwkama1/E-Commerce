@@ -159,7 +159,6 @@ export class LArticle implements ILArticle {
         await this.validateUpdateArticle(dtart);
         FactoryData.getDArticle().updateArticle(dtart);
     }
-    
     public async deleteArticle(dtart: Article) {
         await this.validateDeleteArticle(dtart);
         FactoryData.getDArticle().deleteArticle(dtart);
