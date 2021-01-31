@@ -9,43 +9,62 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DClient = void 0;
-const Client_1 = require("../../shared/entity/Client");
+exports.DAdministrator = void 0;
+const Administrator_1 = require("../../shared/entity/Administrator");
 const dataexception_1 = require("../../shared/exceptions/dataexception");
 const Conection_1 = require("../Conection");
-class DClient {
+class DAdministrator {
     constructor() { }
     static getInstance() {
-        if (!DClient.instancia) {
-            DClient.instancia = new DClient();
+        if (!DAdministrator.instancia) {
+            DAdministrator.instancia = new DAdministrator();
         }
-        return DClient.instancia;
+        return DAdministrator.instancia;
     }
-    addClient(dtclient) {
+    addAdmin(dtadmin) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let cn = yield Conection_1.Conexion.uri().connect();
-                const collection = cn.db("ECommerce").collection("Client");
-                const result = yield collection.insertOne(dtclient);
+                const collection = cn.db("ECommerce").collection("Admin");
+                const result = yield collection.insertOne(dtadmin);
                 cn.close();
             }
             catch (e) {
-                throw new dataexception_1.DataException("Client could not be added" + e.message);
+                throw new dataexception_1.DataException("Admin could not be added" + e.message);
             }
         });
     }
-    getClient(idcard) {
+    getAdmin(idcard) {
         return __awaiter(this, void 0, void 0, function* () {
-            let cliobj = null;
+            let admobj = null;
             try {
                 let cn = yield Conection_1.Conexion.uri().connect();
-                const collection = cn.db("ECommerce").collection("Client");
-                const client = yield collection.findOne({ _identitycard: idcard });
-                if (client == null) {
+                const collection = cn.db("ECommerce").collection("Admin");
+                const Admin = yield collection.findOne({ _identitycard: idcard });
+                if (Admin == null) {
                     return null;
                 }
-                cliobj = new Client_1.Client(client._identitycard, client._completename, client._password, client._username, client._shippingaddress, client._creditcardnumber);
-                return cliobj;
+                admobj = new Administrator_1.Administrator(Admin._identitycard, Admin._completename, Admin._password, Admin._username, Admin._position);
+                return admobj;
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Admin could not be searched");
+            }
+        });
+    }
+    getAdminbyusername(username) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let admobj = null;
+            try {
+                let cn = yield Conection_1.Conexion.uri().connect();
+                const collection = cn.db("ECommerce").collection("Admin");
+                const Admin = yield collection.findOne({ _username: username });
+                if (Admin == null) {
+                    return null;
+                }
+                admobj = new Administrator_1.Administrator(Admin._identitycard, Admin._completename, Admin._password, Admin._username, Admin._position);
+                return admobj;
                 cn.close();
             }
             catch (e) {
@@ -53,77 +72,57 @@ class DClient {
             }
         });
     }
-    getClientbyusername(username) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let cliobj = null;
-            try {
-                let cn = yield Conection_1.Conexion.uri().connect();
-                const collection = cn.db("ECommerce").collection("Client");
-                const client = yield collection.findOne({ _username: username });
-                if (client == null) {
-                    return null;
-                }
-                cliobj = new Client_1.Client(client._identitycard, client._completename, client._password, client._username, client._shippingaddress, client._creditcardnumber);
-                return cliobj;
-                cn.close();
-            }
-            catch (e) {
-                throw new dataexception_1.DataException("Client could not be searched");
-            }
-        });
-    }
-    updateClient(dtclient) {
+    updateAdmin(dtadmin) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let cn = yield Conection_1.Conexion.uri().connect();
-                let query = { _identitycard: dtclient.identitycard };
-                var newvalues = { $set: { _completename: dtclient.completename,
-                        _password: dtclient.password,
-                        _shippingaddress: dtclient.shippingaddress,
-                        _creditcardnumber: dtclient.creditcardnumber,
+                let query = { _identitycard: dtadmin.identitycard };
+                var newvalues = { $set: { _completename: dtadmin.completename,
+                        _password: dtadmin.password,
+                        _position: dtadmin.position,
                     } };
-                const coladvert = cn.db("ECommerce").collection("Client");
+                const coladvert = cn.db("ECommerce").collection("Admin");
                 const result = yield coladvert.updateOne(query, newvalues);
                 cn.close();
             }
             catch (e) {
-                throw new dataexception_1.DataException("Client could not be updated" + e.message);
+                throw new dataexception_1.DataException("Admin could not be updated" + e.message);
             }
         });
     }
-    deleteClient(dtclient) {
+    deleteAdmin(dtadmin) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let cn = yield Conection_1.Conexion.uri().connect();
-                let query = { _identitycard: dtclient.identitycard };
-                const colcat = cn.db("ECommerce").collection("Client");
+                let query = { _identitycard: dtadmin.identitycard };
+                const colcat = cn.db("ECommerce").collection("Admin");
                 const result = yield colcat.deleteOne(query);
                 cn.close();
             }
             catch (e) {
-                throw new dataexception_1.DataException("Client could not be deleted" + e.message);
+                throw new dataexception_1.DataException("Admin could not be deleted" + e.message);
             }
         });
     }
-    getClients() {
+    getAdmins() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let cn = yield Conection_1.Conexion.uri().connect();
-                const collection = cn.db("ECommerce").collection("Client");
+                const collection = cn.db("ECommerce").collection("Admin");
                 const result = yield collection.find({}).toArray();
                 let array = [];
-                for (var client of result) {
-                    var cliobj = new Client_1.Client(client._identitycard, client._completename, client._password, client._username, client._shippingaddress, client._creditcardnumber);
-                    array.push(cliobj);
+                for (var Admin of result) {
+                    var admobj = new Administrator_1.Administrator(Admin._identitycard, Admin._completename, Admin._password, Admin._username, Admin._position);
+                    array.push(admobj);
                 }
                 return array;
                 cn.close();
             }
             catch (e) {
-                throw new dataexception_1.DataException("Clients could not be listed" + e.message);
+                throw new dataexception_1.DataException("Admins could not be listed" + e.message);
             }
         });
     }
 }
-exports.DClient = DClient;
-//# sourceMappingURL=DClient.js.map
+exports.DAdministrator = DAdministrator;
+//# sourceMappingURL=DAdministrator.js.map

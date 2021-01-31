@@ -6,7 +6,8 @@ export interface ILUser {
     getUser(idcard: string) ;
     loginUser(username:string,password:string);
     updateUser(dtuser: User);
-    // getArticle(barcode: string) ;
-    // addArticle(dtart: User);
+    getClients();
+    getAdmins();
+    deleteUser(dtuser: User);
 }
     

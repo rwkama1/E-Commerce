@@ -1,7 +1,7 @@
 {
   "name": "e-commercee",
   "version": "0.0.3",
-  "description": "This package contains a backend of what would be the logic of a radio transmitter software, the architecture used is made in 3 layers",
+  "description": "This package contains a backend of what would be the logic of a e-commercee software, the architecture used is made in 3 layers",
   "main": "app.js",
   "license": "MIT",
   "author": {
@@ -9,11 +9,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/rwkama1/RadioTrasmitter"
+    "url": "https://github.com/rwkama1/E-Commerce"
   },
   "keywords": [
     "backend",
-    "typescript"
+    "typescript",
+    "ts",
+    "js",
+    "Javascript",
+    "ecommerce"
+
   ],
   "scripts": {
     "start": "node app"

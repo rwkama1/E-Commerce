@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LUser = void 0;
 const FactoryData_1 = require("../../data/FactoryData");
+const Administrator_1 = require("../../shared/entity/Administrator");
 const Client_1 = require("../../shared/entity/Client");
 const logicexception_1 = require("../../shared/exceptions/logicexception");
 const bcrypt = require('bcrypt');
@@ -67,6 +68,12 @@ class LUser {
                     throw new logicexception_1.LogicException("The shipping address cannot be empty");
                 }
             }
+            if (dtuser instanceof Administrator_1.Administrator) {
+                let admin = dtuser;
+                if (admin.position.trim() === "") {
+                    throw new logicexception_1.LogicException("The position cannot be empty");
+                }
+            }
             this.validateIdCard(dtuser.identitycard);
             this.validateUserName(dtuser.username);
             let idcardsearch = yield this.getUser(dtuser.identitycard);
@@ -103,9 +110,27 @@ class LUser {
                     throw new logicexception_1.LogicException("The shipping address cannot be empty");
                 }
             }
+            if (dtuser instanceof Administrator_1.Administrator) {
+                let admin = dtuser;
+                if (admin.position.trim() === "") {
+                    throw new logicexception_1.LogicException("The position cannot be empty");
+                }
+            }
             this.validateIdCard(dtuser.identitycard);
             let idcardsearch = yield this.getUser(dtuser.identitycard);
             if (idcardsearch == null) {
+                throw new logicexception_1.LogicException("That User does not exists in the system");
+            }
+        });
+    }
+    validateDeleteUser(dtuser) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (dtuser == null) {
+                throw new logicexception_1.LogicException("The User is empty ");
+            }
+            this.validateIdCard(dtuser.identitycard);
+            let sobjcli = yield this.getUser(dtuser.identitycard);
+            if (sobjcli == null) {
                 throw new logicexception_1.LogicException("That User does not exists in the system");
             }
         });
@@ -117,6 +142,9 @@ class LUser {
             this.validateIdCard(idcard);
             var suser;
             suser = yield FactoryData_1.FactoryData.getDClient().getClient(idcard);
+            if (suser == null) {
+                suser = yield FactoryData_1.FactoryData.getDAdmin().getAdmin(idcard);
+            }
             return suser;
         });
     }
@@ -125,6 +153,9 @@ class LUser {
             this.validateUserName(username);
             var suser;
             suser = yield FactoryData_1.FactoryData.getDClient().getClientbyusername(username);
+            if (suser == null) {
+                suser = yield FactoryData_1.FactoryData.getDAdmin().getAdminbyusername(username);
+            }
             return suser;
         });
     }
@@ -136,6 +167,9 @@ class LUser {
             if (dtuser instanceof Client_1.Client) {
                 FactoryData_1.FactoryData.getDClient().addClient(dtuser);
             }
+            if (dtuser instanceof Administrator_1.Administrator) {
+                FactoryData_1.FactoryData.getDAdmin().addAdmin(dtuser);
+            }
         });
     }
     updateUser(dtuser) {
@@ -146,6 +180,20 @@ class LUser {
             if (dtuser instanceof Client_1.Client) {
                 FactoryData_1.FactoryData.getDClient().updateClient(dtuser);
             }
+            if (dtuser instanceof Administrator_1.Administrator) {
+                FactoryData_1.FactoryData.getDAdmin().updateAdmin(dtuser);
+            }
+        });
+    }
+    deleteUser(dtuser) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.validateDeleteUser(dtuser);
+            if (dtuser instanceof Client_1.Client) {
+                FactoryData_1.FactoryData.getDClient().deleteClient(dtuser);
+            }
+            if (dtuser instanceof Administrator_1.Administrator) {
+                FactoryData_1.FactoryData.getDAdmin().deleteAdmin(dtuser);
+            }
         });
     }
     loginUser(username, password) {
@@ -153,18 +201,33 @@ class LUser {
             this.validateLogin(username, password);
             var suser;
             suser = yield FactoryData_1.FactoryData.getDClient().getClientbyusername(username);
+            if (suser == null) {
+                suser = yield FactoryData_1.FactoryData.getDAdmin().getAdminbyusername(username);
+            }
             if (suser) {
                 var match = yield bcrypt.compare(password, suser.password);
                 if (match) {
                     return suser;
                 }
                 else {
-                    throw new logicexception_1.LogicException("Error authenticating user");
+                    throw new logicexception_1.LogicException("Incorrect password");
                 }
             }
             else {
                 throw new logicexception_1.LogicException("That User does not exist in the system");
             }
+        });
+    }
+    getClients() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var list = yield FactoryData_1.FactoryData.getDClient().getClients();
+            return list;
+        });
+    }
+    getAdmins() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var list = yield FactoryData_1.FactoryData.getDAdmin().getAdmins();
+            return list;
         });
     }
 }

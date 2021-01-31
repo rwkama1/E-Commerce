@@ -100,39 +100,47 @@ export class DClient implements IDClient {
         }
 
     }
-    // public async deleteArticle(dtart: Article) {
-    //     try {
+    public async deleteClient(dtclient: Client) {
+        try {
 
-    //         let cn = await Conexion.uri().connect();
-    //         let query = { _barcode: dtart.barcode };
-    //         const colcat = cn.db("ECommerce").collection("Article");
-    //         const result = await colcat.deleteOne(query);
-    //         cn.close();
+            let cn = await Conexion.uri().connect();
+            let query = { _identitycard: dtclient.identitycard };
+            const colcat = cn.db("ECommerce").collection("Client");
+            const result = await colcat.deleteOne(query);
+            cn.close();
 
-    //     }
-    //     catch (e) {
-    //         throw new DataException("Article could not be deleted" + e.message);
-    //     }
+        }
+        catch (e) {
+            throw new DataException("Client could not be deleted" + e.message);
+        }
 
-    // }
-    // public async updateStock(dtart: Article) {
-    //     try {
+    }
 
-    //         let cn = await Conexion.uri().connect();
-    //         let query = { _barcode: dtart.barcode };
-    //         var newvalues = { $set: { 
-    //             _stock: dtart.stock
-    //            } };
-    //         const coladvert = cn.db("ECommerce").collection("Article");
-    //         const result = await coladvert.updateOne(query,newvalues);
+    public async getClients() {
+      
 
+        try {
+            let cn = await Conexion.uri().connect();
+            const collection = cn.db("ECommerce").collection("Client");
+            const result = await collection.find({}).toArray();
 
-    //         cn.close();
+            let array = [];
+            for (var client of result) {
+                var cliobj = new Client(client._identitycard,
+                    client._completename,client._password,client._username,client._shippingaddress,
+                    client._creditcardnumber
+                   );
+                   array.push(cliobj);
+            }
 
-    //     }
-    //     catch (e) {
-    //         throw new DataException("Article could not be updated" + e.message);
-    //     }
+            return array;
+            cn.close();
 
-    // }
+        }
+        catch (e) {
+            throw new DataException("Clients could not be listed" + e.message);
+        }
+
+    }
+   
 }

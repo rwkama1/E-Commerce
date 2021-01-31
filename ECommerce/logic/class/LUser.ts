@@ -1,4 +1,5 @@
 import { FactoryData } from "../../data/FactoryData";
+import { Administrator } from "../../shared/entity/Administrator";
 import { Client } from "../../shared/entity/Client";
 import { User } from "../../shared/entity/User";
 import { LogicException } from "../../shared/exceptions/logicexception";
@@ -60,8 +61,6 @@ export class LUser implements ILUser {
          {
             let client = dtuser as Client;
             var numbers = /^[0-9]+$/;
-           
-
             if (!client.creditcardnumber.trim().match(numbers)) {
                 throw new LogicException("The credit card number must have only numbers");
             }
@@ -73,7 +72,13 @@ export class LUser implements ILUser {
             }
 
          }
-
+         if (dtuser instanceof Administrator) 
+         {
+            let admin = dtuser as Administrator;
+            if (admin.position.trim() === "") {
+                throw new LogicException("The position cannot be empty");
+            }
+         }
          this.validateIdCard(dtuser.identitycard);
          this.validateUserName(dtuser.username);
          let idcardsearch = await this.getUser(dtuser.identitycard);
@@ -115,7 +120,13 @@ export class LUser implements ILUser {
             }
 
          }
-
+         if (dtuser instanceof Administrator) 
+         {
+            let admin = dtuser as Administrator;
+            if (admin.position.trim() === "") {
+                throw new LogicException("The position cannot be empty");
+            }
+         }
          this.validateIdCard(dtuser.identitycard);
       
          let idcardsearch = await this.getUser(dtuser.identitycard);
@@ -125,18 +136,39 @@ export class LUser implements ILUser {
         
     
      }
+     private  async validateDeleteUser(dtuser:User)
+     {
+        if (dtuser == null)
+        {
+            throw new LogicException("The User is empty ");
+        }
+        this.validateIdCard(dtuser.identitycard);
+        let sobjcli = await this.getUser(dtuser.identitycard);
+        if (sobjcli == null) {
+            throw new LogicException("That User does not exists in the system");
+        }
+    
+     }
      //********************************************** */
      //USER
      public async getUser(idcard: string) {
         this.validateIdCard(idcard);
         var suser: User;
          suser = await FactoryData.getDClient().getClient(idcard);
+         if (suser == null)
+         {
+             suser = await FactoryData.getDAdmin().getAdmin(idcard);
+         }
         return suser
     }
     public async getUserByusername(username: string) {
         this.validateUserName(username);
         var suser: User;
          suser = await FactoryData.getDClient().getClientbyusername(username);
+         if (suser == null)
+         {
+             suser = await FactoryData.getDAdmin().getAdminbyusername(username);
+         }
         return suser;
     }
     public async addUser(dtuser: User) {
@@ -147,6 +179,10 @@ export class LUser implements ILUser {
         if (dtuser instanceof Client)
         {
             FactoryData.getDClient().addClient(dtuser);
+        }
+        if (dtuser instanceof Administrator)
+        {
+            FactoryData.getDAdmin().addAdmin(dtuser);
         }
        
       
@@ -160,6 +196,25 @@ export class LUser implements ILUser {
         {
             FactoryData.getDClient().updateClient(dtuser);
         }
+        if (dtuser instanceof Administrator)
+        {
+            FactoryData.getDAdmin().updateAdmin(dtuser);
+        }
+       
+      
+    }
+    public async deleteUser(dtuser: User) {
+
+        await this.validateDeleteUser(dtuser);
+
+        if (dtuser instanceof Client)
+        {
+            FactoryData.getDClient().deleteClient(dtuser);
+        }
+        if (dtuser instanceof Administrator)
+        {
+            FactoryData.getDAdmin().deleteAdmin(dtuser);
+        }
        
       
     }
@@ -169,6 +224,10 @@ export class LUser implements ILUser {
 
             var suser: User;
             suser = await FactoryData.getDClient().getClientbyusername(username);
+            if(suser==null)
+            {
+                suser = await FactoryData.getDAdmin().getAdminbyusername(username);
+            }
             if(suser)
             {
                 var match=await bcrypt.compare(password,suser.password);
@@ -178,7 +237,7 @@ export class LUser implements ILUser {
                 }
                 else
                 {
-                    throw new LogicException("Error authenticating user");
+                    throw new LogicException("Incorrect password");
                 }
             }
             else
@@ -186,10 +245,13 @@ export class LUser implements ILUser {
                 throw new LogicException("That User does not exist in the system");
 
             }
-           
-      
-       
-      
     }
-
+    public async getClients()  {
+        var list = await FactoryData.getDClient().getClients();
+         return list;
+      }
+    public async getAdmins()  {
+        var list = await FactoryData.getDAdmin().getAdmins();
+         return list;
+      }
 }
