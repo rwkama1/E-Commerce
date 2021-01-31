@@ -100,9 +100,9 @@ var dtadmin = new Administrator("85634858",'AdminAdmin',"Admin2","Admin","Manage
 
 //ADMIN
  
-FactoryLogic.getLUser().addUser(dtadmin).then(data => {
-    console.log(data);
-});
+// FactoryLogic.getLUser().addUser(dtadmin).then(data => {
+//     console.log(data);
+// });
 // FactoryLogic.getLUser().loginUser("Admin","Admin").then(data => {
 //     console.log(data);
 // });
@@ -115,8 +115,8 @@ FactoryLogic.getLUser().addUser(dtadmin).then(data => {
 // FactoryLogic.getLUser().getAdmins().then(data => {
 //     console.log(data);
 // });
-
-
+//************************************************************************ */
+//ORDER
 
 
 
