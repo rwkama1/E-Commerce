@@ -1,6 +1,8 @@
+import { Article } from "./Article";
 import { Client } from "./Client";
+import { OrderDetail } from "./OrderDetail";
 
-export class OrderDetail 
+export class Order
 {
 
     private _state: string = "";
@@ -36,9 +38,38 @@ export class OrderDetail
         this._listOrderDetails = value;
     }
 
-    // constructor(pstate:string,ptotal:number,pclient:Client,plistordersdetails)
-    // {
-    //     this.quantity=pquantity;
-    //     this.article=particle;
-    // }
+    constructor(pstate:string,ptotal:number
+        ,pclient:Client,plistordersdetails:OrderDetail[])
+    {
+        this.state=pstate;
+        this.total=ptotal;
+        this.client=pclient;
+        this.listOrderDetails=plistordersdetails;
+    }
+    
+    public quantityofarticles(): number {
+        return this.listOrderDetails.length;
+    }
+    public  registerOrderDetail(article:Article, quantity:number) {
+        var detail = new OrderDetail(quantity,article);
+        var odetails=this.listOrderDetails;
+        odetails.push(detail);
+        return detail;
+       
+    }
+    public  close() {
+       
+        var details=this.listOrderDetails;
+        var vtotal=0;
+        for (var d of details) {
+            vtotal += d.getAmount
+        }
+       this.total=vtotal;    
+    }
+     
+    public  haveOrderDetails() {
+        var varhdetails=this.listOrderDetails;
+        var haveod = varhdetails.length > 0;
+        return haveod;
+    }
 }

@@ -18,9 +18,8 @@ export class OrderDetail
     public set article(value: Article) {
         this._article = value;
     }
-     public get getAmount(): number {
+    public get getAmount(): number {
         var quantity = this.quantity;
-        
         var article = this.article;
         var price = article.price;
         
