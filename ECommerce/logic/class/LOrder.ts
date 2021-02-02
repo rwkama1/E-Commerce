@@ -1,3 +1,4 @@
+import { FactoryData } from "../../data/FactoryData";
 import { Article } from "../../shared/entity/Article";
 import { Order } from "../../shared/entity/Order";
 import { OrderDetail } from "../../shared/entity/OrderDetail";
@@ -56,7 +57,7 @@ export class LOrder implements ILOrder {
     //********************************* */
     //FUNCTIONS
     public async startOrder() {
-        var vorder=new Order("Pending",0,null,[]);
+        var vorder=new Order(new Date(),"Pending",0,null,[]);
         this.order=await vorder;
         return "A new order was started";
     }
@@ -96,9 +97,30 @@ export class LOrder implements ILOrder {
         }
         else
         {
-            throw new LogicException("The Order is null")
+            throw new LogicException("The Order is null");
         }
         return dataOrder;
+    }
+    public async saveOrder() {
+        var dataOrders :Order;
+        dataOrders =  this.order;
+        
+        if (this.order != null) {
+          var haveorderdetails=dataOrders.haveOrderDetails();
+          if(haveorderdetails)
+          {
+             await FactoryData.getDOrder().addOrder(dataOrders);
+          }
+          else
+          {
+              throw new LogicException("The order has no ordered items");
+          }
+        }
+        else
+        {
+            throw new LogicException("The Order is null");
+        }
+      
     }
 
 } 

@@ -127,13 +127,17 @@ async function addordertoshoppingcart () {
       console.log(registerItemonOrder2);
       let registerItemonOrder3 = await FactoryLogic.getLOrder().registerItemonOrder("45687945345387", 3);
       console.log(registerItemonOrder3);
-      let removeItem = await FactoryLogic.getLOrder().removeItemonOrder("45687945345387");
-      console.log(removeItem);
+     
       let loginClient = await FactoryLogic.getLUser().loginUser(dtclient.username, dtclient.password);
       console.log("Welcome: "+loginClient.completename)
       
       let close = await FactoryLogic.getLOrder().closeOrder();
       console.log(close);
+      let removeItem = await FactoryLogic.getLOrder().removeItemonOrder("45687945345387");
+      console.log(removeItem);
+      
+      let close2 = await FactoryLogic.getLOrder().closeOrder();
+      console.log(close2);
     
   }
   addordertoshoppingcart().then(data => {
