@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FactoryLogic = void 0;
 const LArticle_1 = require("./class/LArticle");
 const LCategory_1 = require("./class/LCategory");
+const LOrder_1 = require("./class/LOrder");
 const LUser_1 = require("./class/LUser");
 class FactoryLogic {
     static getLCategory() {
@@ -13,6 +14,9 @@ class FactoryLogic {
     }
     static getLUser() {
         return (LUser_1.LUser.getInstance());
+    }
+    static getLOrder() {
+        return (LOrder_1.LOrder.getInstance());
     }
 }
 exports.FactoryLogic = FactoryLogic;

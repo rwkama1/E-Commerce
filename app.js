@@ -8,8 +8,8 @@ const Administrator = require("./ECommerce/dist/shared/entity/Administrator").Ad
 // var dtart=new Article("12345678909898","Monitor Led 19.5' Hd Kolke Entradas Hdmi Y Vga Loi",,10,
 // "Disfrutá de una buena calidad de imagen con este monitor Kolke KES-459 que cuenta con una pantalla LED de 19.5 y una resolución de 1366 x 768. Puede inclinarse 5° hacia adelante y 15° hacia atrás.",
 // "gdsg.gif",dtcat);
-// var dtclient = new Client("82889551",'Client1',"rwkama3","rwkama4","Address 111 ","375259829079721");
-var dtadmin = new Administrator("85634858",'AdminAdmin',"Admin2","Admin","Manager");
+var dtclient = new Client("82889551",'Client1',"Client","Client1","Address 111 ","375259829079721");
+// var dtadmin = new Administrator("85634858",'AdminAdmin',"Admin2","Admin","Manager");
 
 //***************************************************************
 //CATEGORIES
@@ -117,8 +117,29 @@ var dtadmin = new Administrator("85634858",'AdminAdmin',"Admin2","Admin","Manage
 // });
 //************************************************************************ */
 //ORDER
-
-
+async function addordertoshoppingcart () {
+ 
+      let start = await FactoryLogic.getLOrder().startOrder();
+      console.log(start);
+      let registerItemonOrder = await FactoryLogic.getLOrder().registerItemonOrder("478963545879789", 1);
+      console.log(registerItemonOrder);
+      let registerItemonOrder2 = await FactoryLogic.getLOrder().registerItemonOrder("653453487975466548", 2);
+      console.log(registerItemonOrder2);
+      let registerItemonOrder3 = await FactoryLogic.getLOrder().registerItemonOrder("45687945345387", 3);
+      console.log(registerItemonOrder3);
+      let removeItem = await FactoryLogic.getLOrder().removeItemonOrder("45687945345387");
+      console.log(removeItem);
+      let loginClient = await FactoryLogic.getLUser().loginUser(dtclient.username, dtclient.password);
+      console.log("Welcome: "+loginClient.completename)
+      
+      let close = await FactoryLogic.getLOrder().closeOrder();
+      console.log(close);
+    
+  }
+  addordertoshoppingcart().then(data => {
+           
+   }); 
+  
 
 
 

@@ -1,9 +1,6 @@
 export interface ILOrder {
-    // getCategory(name: string);
-    // addCategory(dtcategory: Category);
-    // updateCategory(dtcategory: Category);
-    // deleteCategory(dtcategory: Category);
-    // getCategorysByNameLetter(expression: string) ;
-    // getCategories();
-   
+      startOrder();
+      registerItemonOrder(barcode:string, quantity:number);
+      removeItemonOrder(barcode:string);
+      closeOrder();  
 }

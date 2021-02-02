@@ -44,8 +44,8 @@ class LOrder {
         }
     }
     validateState(state) {
-        if (state != "Open") {
-            throw new logicexception_1.LogicException("The state must be 'Open'");
+        if (state != "Pending") {
+            throw new logicexception_1.LogicException("The state must be 'Pending'");
         }
     }
     validateArticle(article) {
@@ -56,8 +56,11 @@ class LOrder {
     //********************************* */
     //FUNCTIONS
     startOrder() {
-        var vorder = new Order_1.Order("Open", 0, null, []);
-        this.order = vorder;
+        return __awaiter(this, void 0, void 0, function* () {
+            var vorder = new Order_1.Order("Pending", 0, null, []);
+            this.order = yield vorder;
+            return "A new order was started";
+        });
     }
     registerItemonOrder(barcode, quantity) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -72,18 +75,30 @@ class LOrder {
             return dataOrderDetails;
         });
     }
+    removeItemonOrder(barcode) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var getdataorder = this.order;
+            this.validateBarCode(barcode);
+            var article = yield LArticle_1.LArticle.getInstance().getArticle(barcode);
+            this.validateArticle(article);
+            getdataorder.removeOrderDetail(barcode);
+            return "The Order detail with barcode: " + barcode + " was deleted";
+        });
+    }
     closeOrder() {
-        var dataOrder;
-        dataOrder = this.order;
-        if (this.order != null) {
-            var clstate = this.order.state;
-            this.validateState(clstate);
-            dataOrder.close();
-        }
-        else {
-            throw new logicexception_1.LogicException("The Order is null");
-        }
-        return dataOrder;
+        return __awaiter(this, void 0, void 0, function* () {
+            var dataOrder;
+            dataOrder = yield this.order;
+            if (this.order != null) {
+                var clstate = this.order.state;
+                this.validateState(clstate);
+                dataOrder.close();
+            }
+            else {
+                throw new logicexception_1.LogicException("The Order is null");
+            }
+            return dataOrder;
+        });
     }
 }
 exports.LOrder = LOrder;

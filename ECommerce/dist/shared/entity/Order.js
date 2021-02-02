@@ -46,6 +46,15 @@ class Order {
         odetails.push(detail);
         return detail;
     }
+    removeOrderDetail(barcode) {
+        var listoodetail = this.listOrderDetails;
+        for (var i = 0; i < listoodetail.length; i++) {
+            if (listoodetail[i].article.barcode === barcode) {
+                listoodetail.splice(i, 1);
+                break;
+            }
+        }
+    }
     close() {
         var details = this.listOrderDetails;
         var vtotal = 0;

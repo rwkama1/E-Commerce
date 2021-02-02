@@ -43,8 +43,8 @@ export class LOrder implements ILOrder {
     }
     private validateState(state: string)
     {
-        if (state!="Open") {
-            throw new LogicException("The state must be 'Open'");
+        if (state!="Pending") {
+            throw new LogicException("The state must be 'Pending'");
         }
     }
     private validateArticle(article:Article)
@@ -55,11 +55,11 @@ export class LOrder implements ILOrder {
     }
     //********************************* */
     //FUNCTIONS
-    public  startOrder() {
-        var vorder=new Order("Open",0,null,[]);
-        this.order=vorder;
+    public async startOrder() {
+        var vorder=new Order("Pending",0,null,[]);
+        this.order=await vorder;
+        return "A new order was started";
     }
-
     public  async registerItemonOrder(barcode:string, quantity:number) {
        
         var dataOrderDetails :OrderDetail;
@@ -73,13 +73,25 @@ export class LOrder implements ILOrder {
         return dataOrderDetails;
         
     }
-    public  closeOrder() {
+    public async removeItemonOrder(barcode:string) {
+       
+      
+        var getdataorder=this.order;
+        this.validateBarCode(barcode);
+        var article = await LArticle.getInstance().getArticle(barcode);
+        this.validateArticle(article);       
+        getdataorder.removeOrderDetail(barcode);     
+        return "The Order detail with barcode: "+ barcode+" was deleted";
+        
+    }
+    public async closeOrder() {
         var dataOrder :Order;
-        dataOrder = this.order;
+        dataOrder = await this.order;
         
         if (this.order != null) {
             var clstate = this.order.state;
             this.validateState(clstate);
+            
             dataOrder.close();
         }
         else
@@ -88,5 +100,5 @@ export class LOrder implements ILOrder {
         }
         return dataOrder;
     }
- 
-}
+
+} 
