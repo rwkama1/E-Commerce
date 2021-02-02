@@ -3,15 +3,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Order = void 0;
 const OrderDetail_1 = require("./OrderDetail");
 class Order {
-    constructor(pstate, ptotal, pclient, plistordersdetails) {
+    constructor(pdate, pstate, ptotal, pclient, plistordersdetails) {
+        this._date = null;
         this._state = "";
         this._total = 0;
         this._client = null;
         this._listOrderDetails = [];
+        this.date = pdate;
         this.state = pstate;
         this.total = ptotal;
         this.client = pclient;
         this.listOrderDetails = plistordersdetails;
+    }
+    get date() {
+        return this._date;
+    }
+    set date(value) {
+        this._date = value;
     }
     get state() {
         return this._state;

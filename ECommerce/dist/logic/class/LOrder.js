@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LOrder = void 0;
+const FactoryData_1 = require("../../data/FactoryData");
 const Order_1 = require("../../shared/entity/Order");
 const logicexception_1 = require("../../shared/exceptions/logicexception");
 const LArticle_1 = require("./LArticle");
@@ -57,7 +58,7 @@ class LOrder {
     //FUNCTIONS
     startOrder() {
         return __awaiter(this, void 0, void 0, function* () {
-            var vorder = new Order_1.Order("Pending", 0, null, []);
+            var vorder = new Order_1.Order(new Date(), "Pending", 0, null, []);
             this.order = yield vorder;
             return "A new order was started";
         });
@@ -98,6 +99,24 @@ class LOrder {
                 throw new logicexception_1.LogicException("The Order is null");
             }
             return dataOrder;
+        });
+    }
+    saveOrder() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var dataOrders;
+            dataOrders = this.order;
+            if (this.order != null) {
+                var haveorderdetails = dataOrders.haveOrderDetails();
+                if (haveorderdetails) {
+                    yield FactoryData_1.FactoryData.getDOrder().addOrder(dataOrders);
+                }
+                else {
+                    throw new logicexception_1.LogicException("The order has no ordered items");
+                }
+            }
+            else {
+                throw new logicexception_1.LogicException("The Order is null");
+            }
         });
     }
 }
