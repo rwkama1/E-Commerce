@@ -58,7 +58,7 @@ export class LOrder implements ILOrder {
     //********************************* */
     //FUNCTIONS
     public async startOrder() {
-        var vorder=new Order("",null,"Pending",0,null,[]);
+        var vorder=new Order(0,null,"Pending",0,null,[]);
 
         this.order=await vorder;
         return "A new order was started";
@@ -131,7 +131,7 @@ export class LOrder implements ILOrder {
         var list = await FactoryData.getDOrder().listpendingOrders();
         return list;
       }
-   public async getOrder(id: string) {
+   public async getOrder(id: number) {
        
         var searchorder=await FactoryData.getDOrder().getOrder(id);
         if(searchorder==null)

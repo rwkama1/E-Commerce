@@ -15,7 +15,10 @@ export class DOrder implements DOrder {
     }
     public async addOrder(dtorder:Order ) {
         try {
-
+         var quantityorders=await this.getOrders();
+          var quantity=quantityorders.length;
+          var quantity1=quantity++;
+          dtorder.id=quantity1;
            let cn = await Conexion.uri().connect();
             const collection = cn.db("ECommerce").collection("Order");
             const result = await collection.insertOne(dtorder);
@@ -26,7 +29,7 @@ export class DOrder implements DOrder {
             throw new DataException("Order could not be added" + e.message);
         }
     }
-    public async getOrder(id:string) {
+    public async getOrder(id:number) {
 
         let orderobj= null;
         try {
@@ -49,6 +52,26 @@ export class DOrder implements DOrder {
             let cn = await Conexion.uri().connect();
             const collection = cn.db("ECommerce").collection("Order");
             const result = await collection.find({_state : 'Pending' }).toArray();
+
+            let array = [];
+            for (var order of result) {
+                var orderobj = new Order(order._id,order._date,order._state,order._total,order._client,order._listOrderDetails);
+                array.push(orderobj);
+            }
+            return array;
+            cn.close();
+
+        }
+        catch (e) {
+            throw new DataException("Orders could not be listed" + e.message);
+        }
+
+    }
+    public async getOrders() {
+        try {
+            let cn = await Conexion.uri().connect();
+            const collection = cn.db("ECommerce").collection("Order");
+            const result = await collection.find({}).toArray();
 
             let array = [];
             for (var order of result) {

@@ -24,6 +24,10 @@ class DOrder {
     addOrder(dtorder) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                var quantityorders = yield this.getOrders();
+                var quantity = quantityorders.length;
+                var quantity1 = quantity++;
+                dtorder.id = quantity1;
                 let cn = yield Conection_1.Conexion.uri().connect();
                 const collection = cn.db("ECommerce").collection("Order");
                 const result = yield collection.insertOne(dtorder);
@@ -40,7 +44,7 @@ class DOrder {
             try {
                 let cn = yield Conection_1.Conexion.uri().connect();
                 const collection = cn.db("ECommerce").collection("Order");
-                const getorder = yield collection.findOne(id);
+                const getorder = yield collection.findOne({ _id: id });
                 if (getorder == null) {
                     return null;
                 }
@@ -59,6 +63,25 @@ class DOrder {
                 let cn = yield Conection_1.Conexion.uri().connect();
                 const collection = cn.db("ECommerce").collection("Order");
                 const result = yield collection.find({ _state: 'Pending' }).toArray();
+                let array = [];
+                for (var order of result) {
+                    var orderobj = new Order_1.Order(order._id, order._date, order._state, order._total, order._client, order._listOrderDetails);
+                    array.push(orderobj);
+                }
+                return array;
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Orders could not be listed" + e.message);
+            }
+        });
+    }
+    getOrders() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let cn = yield Conection_1.Conexion.uri().connect();
+                const collection = cn.db("ECommerce").collection("Order");
+                const result = yield collection.find({}).toArray();
                 let array = [];
                 for (var order of result) {
                     var orderobj = new Order_1.Order(order._id, order._date, order._state, order._total, order._client, order._listOrderDetails);

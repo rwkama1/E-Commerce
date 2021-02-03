@@ -4,7 +4,7 @@ exports.Order = void 0;
 const OrderDetail_1 = require("./OrderDetail");
 class Order {
     constructor(pid, pdate, pstate, ptotal, pclient, plistordersdetails) {
-        this._id = "";
+        this._id = 0;
         this._date = null;
         this._state = "";
         this._total = 0;

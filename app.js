@@ -8,7 +8,7 @@ const Order = require("./ECommerce/dist/shared/entity/Order").Order;
 // var dtart=new Article("12345678909898","Monitor Led 19.5' Hd Kolke Entradas Hdmi Y Vga Loi",,10,
 // "Disfrutá de una buena calidad de imagen con este monitor Kolke KES-459 que cuenta con una pantalla LED de 19.5 y una resolución de 1366 x 768. Puede inclinarse 5° hacia adelante y 15° hacia atrás.",
 // "gdsg.gif",dtcat);
-// var dtclient = new Client("85632145",'Client3',"Client3","Client3","Address 111 ","23568974226689");
+ var dtclient = new Client("85632145",'Client1',"Client","Client1","Address 111 ","23568974226689");
 // var dtadmin = new Administrator("85634858",'AdminAdmin',"Admin2","Admin","Manager");
 
 
@@ -124,18 +124,18 @@ const Order = require("./ECommerce/dist/shared/entity/Order").Order;
 //       console.log(start);
 //       let registerItemonOrder = await FactoryLogic.getLOrder().registerItemonOrder("478963545879789", 1);
 //       console.log(registerItemonOrder);
-//       let registerItemonOrder2 = await FactoryLogic.getLOrder().registerItemonOrder("653453487975466548", 2);
-//       console.log(registerItemonOrder2);
-//       let registerItemonOrder3 = await FactoryLogic.getLOrder().registerItemonOrder("45687945345387", 3);
-//       console.log(registerItemonOrder3);
+//     //   let registerItemonOrder2 = await FactoryLogic.getLOrder().registerItemonOrder("653453487975466548", 2);
+//     //   console.log(registerItemonOrder2);
+//     //   let registerItemonOrder3 = await FactoryLogic.getLOrder().registerItemonOrder("45687945345387", 3);
+//     //   console.log(registerItemonOrder3);
      
 //       let loginClient = await FactoryLogic.getLUser().loginUser(dtclient.username, dtclient.password);
 //       console.log("Welcome: "+loginClient.completename)
       
 //       let close = await FactoryLogic.getLOrder().closeOrder();
 //       console.log(close);
-//       let removeItem = await FactoryLogic.getLOrder().removeItemonOrder("45687945345387");
-//       console.log(removeItem);
+//     //   let removeItem = await FactoryLogic.getLOrder().removeItemonOrder("45687945345387");
+//     //   console.log(removeItem);
       
 //       let close2 = await FactoryLogic.getLOrder().closeOrder();
 //       console.log(close2);
@@ -151,7 +151,7 @@ const Order = require("./ECommerce/dist/shared/entity/Order").Order;
 
 async function deliverOrder () {
  
-      let getorder = await FactoryLogic.getLOrder().getOrder("6019dbf2fc11dd1d0c168d39");
+      let getorder = await FactoryLogic.getLOrder().getOrder(2);
       console.log(getorder);
       let delivorder = await FactoryLogic.getLOrder().deliverOrder(getorder);
       console.log(delivorder);
@@ -161,7 +161,7 @@ async function deliverOrder () {
            
    }); 
 
-  
+
 
 
 

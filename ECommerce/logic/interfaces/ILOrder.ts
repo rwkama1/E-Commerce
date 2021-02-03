@@ -8,6 +8,6 @@ export interface ILOrder {
       closeOrder();  
       saveOrder(client:Client);
       getPendingOrders();
-      getOrder(id: string) ;
+      getOrder(id: number) ;
       deliverOrder(dtorder:Order);
 }

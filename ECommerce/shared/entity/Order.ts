@@ -4,7 +4,7 @@ import { OrderDetail } from "./OrderDetail";
 
 export class Order
 {
-    private _id: string = "";
+    private _id: number = 0;
     private _date: Date = null;
     private _state: string = "";
     private _total: number = 0;
@@ -45,13 +45,13 @@ export class Order
     public set listOrderDetails(value: OrderDetail[]) {
         this._listOrderDetails = value;
     }
-    public get id(): string {
+    public get id(): number {
         return this._id;
     }
-    public set id(value: string) {
+    public set id(value: number) {
         this._id = value;
     }
-    constructor(pid:string,pdate:Date,pstate:string,ptotal:number
+    constructor(pid:number,pdate:Date,pstate:string,ptotal:number
         ,pclient:Client,plistordersdetails:OrderDetail[])
     {
         this.id=pid;

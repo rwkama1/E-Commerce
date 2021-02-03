@@ -58,7 +58,7 @@ class LOrder {
     //FUNCTIONS
     startOrder() {
         return __awaiter(this, void 0, void 0, function* () {
-            var vorder = new Order_1.Order("", null, "Pending", 0, null, []);
+            var vorder = new Order_1.Order(0, null, "Pending", 0, null, []);
             this.order = yield vorder;
             return "A new order was started";
         });
