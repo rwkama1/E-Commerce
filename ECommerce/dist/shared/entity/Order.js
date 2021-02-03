@@ -3,12 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Order = void 0;
 const OrderDetail_1 = require("./OrderDetail");
 class Order {
-    constructor(pdate, pstate, ptotal, pclient, plistordersdetails) {
+    constructor(pid, pdate, pstate, ptotal, pclient, plistordersdetails) {
+        this._id = "";
         this._date = null;
         this._state = "";
         this._total = 0;
         this._client = null;
         this._listOrderDetails = [];
+        this.id = pid;
         this.date = pdate;
         this.state = pstate;
         this.total = ptotal;
@@ -44,6 +46,12 @@ class Order {
     }
     set listOrderDetails(value) {
         this._listOrderDetails = value;
+    }
+    get id() {
+        return this._id;
+    }
+    set id(value) {
+        this._id = value;
     }
     quantityofarticles() {
         return this.listOrderDetails.length;

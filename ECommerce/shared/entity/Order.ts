@@ -4,8 +4,8 @@ import { OrderDetail } from "./OrderDetail";
 
 export class Order
 {
+    private _id: string = "";
     private _date: Date = null;
-   
     private _state: string = "";
     private _total: number = 0;
     private _client: Client = null;
@@ -45,10 +45,16 @@ export class Order
     public set listOrderDetails(value: OrderDetail[]) {
         this._listOrderDetails = value;
     }
-
-    constructor(pdate:Date,pstate:string,ptotal:number
+    public get id(): string {
+        return this._id;
+    }
+    public set id(value: string) {
+        this._id = value;
+    }
+    constructor(pid:string,pdate:Date,pstate:string,ptotal:number
         ,pclient:Client,plistordersdetails:OrderDetail[])
     {
+        this.id=pid;
         this.date=pdate;
         this.state=pstate;
         this.total=ptotal;

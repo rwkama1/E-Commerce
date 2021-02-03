@@ -58,7 +58,7 @@ class LOrder {
     //FUNCTIONS
     startOrder() {
         return __awaiter(this, void 0, void 0, function* () {
-            var vorder = new Order_1.Order(new Date(), "Pending", 0, null, []);
+            var vorder = new Order_1.Order("", null, "Pending", 0, null, []);
             this.order = yield vorder;
             return "A new order was started";
         });
@@ -101,14 +101,18 @@ class LOrder {
             return dataOrder;
         });
     }
-    saveOrder() {
+    saveOrder(client) {
         return __awaiter(this, void 0, void 0, function* () {
             var dataOrders;
             dataOrders = this.order;
+            var now = new Date();
+            dataOrders.date = new Date(now.getFullYear(), now.getMonth(), now.getDay());
+            dataOrders.client = client;
             if (this.order != null) {
                 var haveorderdetails = dataOrders.haveOrderDetails();
                 if (haveorderdetails) {
                     yield FactoryData_1.FactoryData.getDOrder().addOrder(dataOrders);
+                    return "The order was saved in the database";
                 }
                 else {
                     throw new logicexception_1.LogicException("The order has no ordered items");
@@ -117,6 +121,30 @@ class LOrder {
             else {
                 throw new logicexception_1.LogicException("The Order is null");
             }
+        });
+    }
+    getPendingOrders() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var list = yield FactoryData_1.FactoryData.getDOrder().listpendingOrders();
+            return list;
+        });
+    }
+    getOrder(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var searchorder = yield FactoryData_1.FactoryData.getDOrder().getOrder(id);
+            if (searchorder == null) {
+                throw new logicexception_1.LogicException("That Order does not exists in the system");
+            }
+            return searchorder;
+        });
+    }
+    deliverOrder(dtorder) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.validateState(dtorder.state);
+            var searchorder = this.getOrder(dtorder.id);
+            dtorder.state = "Delivered";
+            yield FactoryData_1.FactoryData.getDOrder().updatestateOrder(dtorder);
+            return "The Order was delivered";
         });
     }
 }

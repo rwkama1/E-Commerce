@@ -1,5 +1,6 @@
 import { FactoryData } from "../../data/FactoryData";
 import { Article } from "../../shared/entity/Article";
+import { Client } from "../../shared/entity/Client";
 import { Order } from "../../shared/entity/Order";
 import { OrderDetail } from "../../shared/entity/OrderDetail";
 import { LogicException } from "../../shared/exceptions/logicexception";
@@ -57,7 +58,8 @@ export class LOrder implements ILOrder {
     //********************************* */
     //FUNCTIONS
     public async startOrder() {
-        var vorder=new Order(new Date(),"Pending",0,null,[]);
+        var vorder=new Order("",null,"Pending",0,null,[]);
+
         this.order=await vorder;
         return "A new order was started";
     }
@@ -101,15 +103,18 @@ export class LOrder implements ILOrder {
         }
         return dataOrder;
     }
-    public async saveOrder() {
+    public async saveOrder(client:Client) {
         var dataOrders :Order;
         dataOrders =  this.order;
-        
+        var now =new Date();
+        dataOrders.date=new Date(now.getFullYear(),now.getMonth(),now.getDay());
+        dataOrders.client=client;
         if (this.order != null) {
           var haveorderdetails=dataOrders.haveOrderDetails();
           if(haveorderdetails)
           {
              await FactoryData.getDOrder().addOrder(dataOrders);
+             return "The order was saved in the database";
           }
           else
           {
@@ -122,5 +127,25 @@ export class LOrder implements ILOrder {
         }
       
     }
-
+    public async getPendingOrders()  {
+        var list = await FactoryData.getDOrder().listpendingOrders();
+        return list;
+      }
+   public async getOrder(id: string) {
+       
+        var searchorder=await FactoryData.getDOrder().getOrder(id);
+        if(searchorder==null)
+        {
+            throw new LogicException("That Order does not exists in the system");
+        }
+        return searchorder
+    }
+    public async deliverOrder(dtorder:Order) {
+       this.validateState(dtorder.state);
+      var searchorder= this.getOrder(dtorder.id);
+       dtorder.state="Delivered";
+       await FactoryData.getDOrder().updatestateOrder(dtorder);
+       return "The Order was delivered"
+      
+    }  
 } 
