@@ -12,6 +12,6 @@ export interface IDArticle {
     getArticles();
     orderArticlesbyPrice();
     orderArticlesbyCategory();
-    filterArticlesbyCategory(category:Category);
+    filterArticlesbyCategory(namecategory:string);
     
 }

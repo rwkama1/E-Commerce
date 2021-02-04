@@ -6,8 +6,14 @@ export interface ILOrder {
       registerItemonOrder(barcode:string, quantity:number);
       removeItemonOrder(barcode:string);
       closeOrder();  
+      cancelOrder();
       saveOrder(client:Client);
+      deliverOrder(dtorder:Order);
+      personalOrder(dtorder:Order);
+//Get Orders
       getPendingOrders();
       getOrder(id: number) ;
-      deliverOrder(dtorder:Order);
+      getDeliveredOrders();
+      getClientOrders(identitycard:string);
+      getAllOrders();
 }

@@ -12,6 +12,6 @@ export interface ILArticle {
     orderArticlesbyPrice();
     orderArticlesbyCategory();
     getArticles() ;
-    filterArticlesbyCategory(cat:Category);
+    filterArticlesbyCategory(namecategory:string);
    
 }

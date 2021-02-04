@@ -134,7 +134,7 @@ export class LArticle implements ILArticle {
             throw new LogicException("That Article does not exists in the system");
         }
     }
-    private  validateStock(quantity:number)
+    private  validatequantity(quantity:number)
     {
         if (quantity<1)
         {
@@ -164,7 +164,7 @@ export class LArticle implements ILArticle {
         FactoryData.getDArticle().deleteArticle(dtart);
     }
     public async registerStock(barcode: string,quantity:number) {
-        this.validateStock(quantity);
+        this.validatequantity(quantity);
         var searcharticle= await this.getArticle(barcode);
         if(searcharticle==null)
         {
@@ -174,7 +174,7 @@ export class LArticle implements ILArticle {
         FactoryData.getDArticle().updateStock(searcharticle);
     }
     public async deStock(barcode: string,quantity:number) {
-        this.validateStock(quantity);
+        this.validatequantity(quantity);
         var searcharticle= await this.getArticle(barcode);
         if(searcharticle==null)
         {
@@ -201,9 +201,13 @@ export class LArticle implements ILArticle {
         var list = await FactoryData.getDArticle().orderArticlesbyCategory();
          return list;
       }
-      public async  filterArticlesbyCategory(cat:Category)  {
-          var searchcat=await LCategory.getInstance().getCategory(cat.name);
-          var list = await FactoryData.getDArticle().filterArticlesbyCategory(searchcat);
+      public async  filterArticlesbyCategory(namecategory:string)  {
+          var searchcat=await LCategory.getInstance().getCategory(namecategory);
+          if(searchcat==null)
+          {
+              throw new LogicException("That Category does not exists in the system")
+          }
+          var list = await FactoryData.getDArticle().filterArticlesbyCategory(namecategory);
          return list;
       }
      

@@ -214,14 +214,14 @@ export class DArticle implements IDArticle {
         }
 
     }
-    public async filterArticlesbyCategory(category:Category) {
+    public async filterArticlesbyCategory(namecategory:string) {
       
 
         try {
             
             let cn = await Conexion.uri().connect();
             const collection = cn.db("ECommerce").collection("Article");
-            const result = await collection.find({ _category : category }).toArray();
+            const result = await collection.find({"_category._name" : namecategory }).toArray();
 
             let array = [];
             for (var article of result) {

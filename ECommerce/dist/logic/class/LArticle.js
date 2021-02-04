@@ -114,7 +114,7 @@ class LArticle {
             }
         });
     }
-    validateStock(quantity) {
+    validatequantity(quantity) {
         if (quantity < 1) {
             throw new logicexception_1.LogicException("The quantity must be greater than 0");
         }
@@ -148,7 +148,7 @@ class LArticle {
     }
     registerStock(barcode, quantity) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.validateStock(quantity);
+            this.validatequantity(quantity);
             var searcharticle = yield this.getArticle(barcode);
             if (searcharticle == null) {
                 throw new logicexception_1.LogicException("That Article does not exists in the system");
@@ -159,7 +159,7 @@ class LArticle {
     }
     deStock(barcode, quantity) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.validateStock(quantity);
+            this.validatequantity(quantity);
             var searcharticle = yield this.getArticle(barcode);
             if (searcharticle == null) {
                 throw new logicexception_1.LogicException("That Article does not exists in the system");
@@ -195,10 +195,13 @@ class LArticle {
             return list;
         });
     }
-    filterArticlesbyCategory(cat) {
+    filterArticlesbyCategory(namecategory) {
         return __awaiter(this, void 0, void 0, function* () {
-            var searchcat = yield LCategory_1.LCategory.getInstance().getCategory(cat.name);
-            var list = yield FactoryData_1.FactoryData.getDArticle().filterArticlesbyCategory(searchcat);
+            var searchcat = yield LCategory_1.LCategory.getInstance().getCategory(namecategory);
+            if (searchcat == null) {
+                throw new logicexception_1.LogicException("That Category does not exists in the system");
+            }
+            var list = yield FactoryData_1.FactoryData.getDArticle().filterArticlesbyCategory(namecategory);
             return list;
         });
     }

@@ -182,12 +182,12 @@ class DArticle {
             }
         });
     }
-    filterArticlesbyCategory(category) {
+    filterArticlesbyCategory(namecategory) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let cn = yield Conection_1.Conexion.uri().connect();
                 const collection = cn.db("ECommerce").collection("Article");
-                const result = yield collection.find({ _category: category }).toArray();
+                const result = yield collection.find({ "_category._name": namecategory }).toArray();
                 let array = [];
                 for (var article of result) {
                     var artobj = new Article_1.Article(article._barcode, article._name, article._price, article._stock, article._description, article._img, article._category);

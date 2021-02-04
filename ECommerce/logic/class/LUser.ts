@@ -159,6 +159,7 @@ export class LUser implements ILUser {
          {
              suser = await FactoryData.getDAdmin().getAdmin(idcard);
          }
+         
         return suser
     }
     public async getUserByusername(username: string) {

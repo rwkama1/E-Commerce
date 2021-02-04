@@ -97,4 +97,5 @@ export class Order
         var haveod = varhdetails.length > 0;
         return haveod;
     }
+    
 }

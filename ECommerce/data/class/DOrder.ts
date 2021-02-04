@@ -1,3 +1,4 @@
+import { Client } from "../../shared/entity/Client";
 import { Order } from "../../shared/entity/Order";
 import { DataException } from "../../shared/exceptions/dataexception";
 import { Conexion } from "../Conection";
@@ -29,6 +30,20 @@ export class DOrder implements DOrder {
             throw new DataException("Order could not be added" + e.message);
         }
     }
+    public async deleteOrder(dtorder:Order ) {
+        try {
+            let query = { _id: dtorder.id };
+           let cn = await Conexion.uri().connect();
+            const collection = cn.db("ECommerce").collection("Order");
+            const result = await collection.deleteOne(dtorder);
+            cn.close();
+
+        }
+        catch (e) {
+            throw new DataException("Order could not be deleted" + e.message);
+        }
+    }
+    //***************************************************** */
     public async getOrder(id:number) {
 
         let orderobj= null;
@@ -52,6 +67,46 @@ export class DOrder implements DOrder {
             let cn = await Conexion.uri().connect();
             const collection = cn.db("ECommerce").collection("Order");
             const result = await collection.find({_state : 'Pending' }).toArray();
+
+            let array = [];
+            for (var order of result) {
+                var orderobj = new Order(order._id,order._date,order._state,order._total,order._client,order._listOrderDetails);
+                array.push(orderobj);
+            }
+            return array;
+            cn.close();
+
+        }
+        catch (e) {
+            throw new DataException("Orders could not be listed" + e.message);
+        }
+
+    }
+    public async listdeliveredOrders() {
+        try {
+            let cn = await Conexion.uri().connect();
+            const collection = cn.db("ECommerce").collection("Order");
+            const result = await collection.find({_state : 'Delivered' }).toArray();
+
+            let array = [];
+            for (var order of result) {
+                var orderobj = new Order(order._id,order._date,order._state,order._total,order._client,order._listOrderDetails);
+                array.push(orderobj);
+            }
+            return array;
+            cn.close();
+
+        }
+        catch (e) {
+            throw new DataException("Orders could not be listed" + e.message);
+        }
+
+    }
+    public async listClientOrders(identitycard:string) {
+        try {
+            let cn = await Conexion.uri().connect();
+            const collection = cn.db("ECommerce").collection("Order");
+            const result = await collection.find({"_client._identitycard":identitycard }).toArray();
 
             let array = [];
             for (var order of result) {

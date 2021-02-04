@@ -2,7 +2,7 @@ import { Category } from "./Category";
 
 export class Article
 {
-    private _barcode: string = "";
+    public _barcode: string = "";
     private _name: string = "";
     private _price: number = 0.0;
     private _stock: number = 0;

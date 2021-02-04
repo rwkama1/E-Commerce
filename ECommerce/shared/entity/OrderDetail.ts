@@ -2,8 +2,8 @@ import { Article } from "./Article";
 
 export class OrderDetail 
 {
-    private _quantity: number = 0;
-    private _article: Article = null;
+    public _quantity: number = 0;
+    public _article: Article = null;
 
     public get quantity(): number {
         return this._quantity;

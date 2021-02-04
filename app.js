@@ -4,11 +4,11 @@ const Article = require("./ECommerce/dist/shared/entity/Article").Article;
 const Client = require("./ECommerce/dist/shared/entity/Client").Client;
 const Administrator = require("./ECommerce/dist/shared/entity/Administrator").Administrator;
 const Order = require("./ECommerce/dist/shared/entity/Order").Order;
-// var dtcat = new Category("Monitor", "Teléfono portátil que puede hacer o recibir llamadas a través de una portadora de radiofrecuencia, mientras el usuario se está moviendo dentro de un área de servicio telefónico");
+//  var dtcat = new Category("Conectividad", "");
 // var dtart=new Article("12345678909898","Monitor Led 19.5' Hd Kolke Entradas Hdmi Y Vga Loi",,10,
 // "Disfrutá de una buena calidad de imagen con este monitor Kolke KES-459 que cuenta con una pantalla LED de 19.5 y una resolución de 1366 x 768. Puede inclinarse 5° hacia adelante y 15° hacia atrás.",
 // "gdsg.gif",dtcat);
- var dtclient = new Client("85632145",'Client1',"Client","Client1","Address 111 ","23568974226689");
+ var dtclient = new Client("72289541",'Client3',"Client3","Client3","","");
 // var dtadmin = new Administrator("85634858",'AdminAdmin',"Admin2","Admin","Manager");
 
 
@@ -71,7 +71,7 @@ const Order = require("./ECommerce/dist/shared/entity/Order").Order;
 // FactoryLogic.getLArticle().orderArticlesbyCategory().then(data => {
 //     console.log(data);
 // });
-// FactoryLogic.getLArticle().filterArticlesbyCategory(dtcat).then(data => {
+// FactoryLogic.getLArticle().filterArticlesbyCategory(dtcat.name).then(data => {
 //     console.log(data);
 // });
 // FactoryLogic.getLArticle().deStock("12345678909898",1).then(data => {
@@ -124,21 +124,23 @@ const Order = require("./ECommerce/dist/shared/entity/Order").Order;
 //       console.log(start);
 //       let registerItemonOrder = await FactoryLogic.getLOrder().registerItemonOrder("478963545879789", 1);
 //       console.log(registerItemonOrder);
-//     //   let registerItemonOrder2 = await FactoryLogic.getLOrder().registerItemonOrder("653453487975466548", 2);
-//     //   console.log(registerItemonOrder2);
-//     //   let registerItemonOrder3 = await FactoryLogic.getLOrder().registerItemonOrder("45687945345387", 3);
-//     //   console.log(registerItemonOrder3);
+//       let registerItemonOrder2 = await FactoryLogic.getLOrder().registerItemonOrder("653453487975466548", 2);
+//       console.log(registerItemonOrder2);
+//       let registerItemonOrder3 = await FactoryLogic.getLOrder().registerItemonOrder("45687945345387", 1);
+//       console.log(registerItemonOrder3);
      
 //       let loginClient = await FactoryLogic.getLUser().loginUser(dtclient.username, dtclient.password);
 //       console.log("Welcome: "+loginClient.completename)
       
 //       let close = await FactoryLogic.getLOrder().closeOrder();
 //       console.log(close);
+//     //   let cancel = await FactoryLogic.getLOrder().cancelOrder();
+//     //   console.log(cancel);
 //     //   let removeItem = await FactoryLogic.getLOrder().removeItemonOrder("45687945345387");
 //     //   console.log(removeItem);
       
-//       let close2 = await FactoryLogic.getLOrder().closeOrder();
-//       console.log(close2);
+//     //   let close2 = await FactoryLogic.getLOrder().closeOrder();
+//     //   console.log(close2);
       
 //       let saveorder = await FactoryLogic.getLOrder().saveOrder(loginClient);
 //       console.log(saveorder);
@@ -148,18 +150,48 @@ const Order = require("./ECommerce/dist/shared/entity/Order").Order;
            
 //    }); 
 
-
-async function deliverOrder () {
+// FactoryLogic.getLOrder().getOrder(1).then(data => {
+//     console.log(data);
+// });
+// FactoryLogic.getLOrder().getPendingOrders().then(data => {
+//     console.log(data);
+// });
+// FactoryLogic.getLOrder().getClientOrders(dtclient.identitycard).then(data => {
+//     console.log(data);
+// });
+// FactoryLogic.getLOrder().getAllOrders().then(data => {
+//     console.log(data);
+// });
+// FactoryLogic.getLOrder().getDeliveredOrders().then(data => {
+//     console.log(data);
+// });
+// async function deliverOrder () {
  
-      let getorder = await FactoryLogic.getLOrder().getOrder(2);
-      console.log(getorder);
-      let delivorder = await FactoryLogic.getLOrder().deliverOrder(getorder);
-      console.log(delivorder);
+//       let getorder = await FactoryLogic.getLOrder().getOrder(3);
+//       console.log(getorder);
+//       let delivorder = await FactoryLogic.getLOrder().deliverOrder(getorder);
+//       console.log(delivorder);
      
-  }
-  deliverOrder().then(data => {
+//   }
+//   deliverOrder().then(data => {
            
-   }); 
+//    }); 
+// async function PersonalOrder () {
+ 
+ 
+//       let loginClient = await FactoryLogic.getLUser().loginUser(dtclient.username, dtclient.password) ;
+//       console.log("Welcome: "+loginClient.completename)
+//       let getorders = await FactoryLogic.getLOrder().getClientOrders(loginClient.identitycard);
+//       console.log(getorders);
+//       let getorder = await FactoryLogic.getLOrder().getOrder(0);
+//       console.log(getorder);
+//     let pervorder = await FactoryLogic.getLOrder().personalOrder(getorder);
+//     console.log(pervorder);
+   
+// }
+// PersonalOrder().then(data => {
+           
+//    }); 
 
 
 

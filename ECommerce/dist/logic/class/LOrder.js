@@ -14,6 +14,7 @@ const FactoryData_1 = require("../../data/FactoryData");
 const Order_1 = require("../../shared/entity/Order");
 const logicexception_1 = require("../../shared/exceptions/logicexception");
 const LArticle_1 = require("./LArticle");
+const LUser_1 = require("./LUser");
 class LOrder {
     constructor() { }
     static getInstance() {
@@ -54,6 +55,11 @@ class LOrder {
             throw new logicexception_1.LogicException("That Article does not exists in the system");
         }
     }
+    validateStockQuantity(article, quantity) {
+        if (article.stock < quantity) {
+            throw new logicexception_1.LogicException("The quantity entered is greater than the stock of the item");
+        }
+    }
     //********************************* */
     //FUNCTIONS
     startOrder() {
@@ -72,6 +78,7 @@ class LOrder {
             this.validateState(estado);
             var article = yield LArticle_1.LArticle.getInstance().getArticle(barcode);
             this.validateArticle(article);
+            this.validateStockQuantity(article, quantity);
             dataOrderDetails = dataorder.registerOrderDetail(article, quantity);
             return dataOrderDetails;
         });
@@ -101,6 +108,13 @@ class LOrder {
             return dataOrder;
         });
     }
+    cancelOrder() {
+        var canceldataOrders = this.order;
+        if (canceldataOrders != null) {
+            this.order = null;
+            return "The Order was canceled";
+        }
+    }
     saveOrder(client) {
         return __awaiter(this, void 0, void 0, function* () {
             var dataOrders;
@@ -112,6 +126,7 @@ class LOrder {
                 var haveorderdetails = dataOrders.haveOrderDetails();
                 if (haveorderdetails) {
                     yield FactoryData_1.FactoryData.getDOrder().addOrder(dataOrders);
+                    this.order = null;
                     return "The order was saved in the database";
                 }
                 else {
@@ -123,9 +138,41 @@ class LOrder {
             }
         });
     }
+    deliverOrder(dtorder) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.validateState(dtorder.state);
+            var searchorder = yield this.getOrder(dtorder.id);
+            dtorder.state = "Delivered";
+            for (var ordetails of dtorder.listOrderDetails) {
+                yield LArticle_1.LArticle.getInstance().deStock(ordetails._article._barcode, ordetails._quantity);
+            }
+            yield FactoryData_1.FactoryData.getDOrder().updatestateOrder(dtorder);
+            return "The Order was delivered";
+        });
+    }
+    personalOrder(dtorder) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var persearchorder = yield this.getOrder(dtorder.id);
+            if (persearchorder.state == "Pending") {
+                yield FactoryData_1.FactoryData.getDOrder().deleteOrder(persearchorder);
+                return "The Order was deleted";
+            }
+            if (persearchorder.state == "Delivered") {
+                yield FactoryData_1.FactoryData.getDOrder().addOrder(persearchorder);
+                return "The Order was duplicated";
+            }
+        });
+    }
+    //Get Orders
     getPendingOrders() {
         return __awaiter(this, void 0, void 0, function* () {
             var list = yield FactoryData_1.FactoryData.getDOrder().listpendingOrders();
+            return list;
+        });
+    }
+    getDeliveredOrders() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var list = yield FactoryData_1.FactoryData.getDOrder().listdeliveredOrders();
             return list;
         });
     }
@@ -138,13 +185,20 @@ class LOrder {
             return searchorder;
         });
     }
-    deliverOrder(dtorder) {
+    getClientOrders(identitycard) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.validateState(dtorder.state);
-            var searchorder = this.getOrder(dtorder.id);
-            dtorder.state = "Delivered";
-            yield FactoryData_1.FactoryData.getDOrder().updatestateOrder(dtorder);
-            return "The Order was delivered";
+            var searchclient = yield LUser_1.LUser.getInstance().getUser(identitycard);
+            if (searchclient == null) {
+                throw new logicexception_1.LogicException("That Client does not exists in the system");
+            }
+            var list = yield FactoryData_1.FactoryData.getDOrder().listClientOrders(identitycard);
+            return list;
+        });
+    }
+    getAllOrders() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var list = yield FactoryData_1.FactoryData.getDOrder().getOrders();
+            return list;
         });
     }
 }

@@ -1,9 +1,8 @@
 {
   "name": "e-commerce",
   "version": "1.0.0",
-  "main": "dataexception.js",
   "scripts": {
-    "start": "node ./dist/logic/class/LCategory.js",
+   
     "build": "tsc --build",
     "clean": "tsc --build --clean"
   },

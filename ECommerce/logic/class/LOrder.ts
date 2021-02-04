@@ -6,6 +6,7 @@ import { OrderDetail } from "../../shared/entity/OrderDetail";
 import { LogicException } from "../../shared/exceptions/logicexception";
 import { ILOrder } from "../interfaces/ILOrder";
 import { LArticle } from "./LArticle";
+import { LUser } from "./LUser";
 
 export class LOrder implements ILOrder {
 
@@ -55,6 +56,12 @@ export class LOrder implements ILOrder {
             throw new LogicException("That Article does not exists in the system");
         }
     }
+    private validateStockQuantity(article:Article,quantity:number)
+    {
+        if (article.stock<quantity) {
+            throw new LogicException("The quantity entered is greater than the stock of the item");
+        }
+    }
     //********************************* */
     //FUNCTIONS
     public async startOrder() {
@@ -71,7 +78,8 @@ export class LOrder implements ILOrder {
         var estado = dataorder.state;
         this.validateState(estado);
         var article = await LArticle.getInstance().getArticle(barcode);
-        this.validateArticle(article);       
+        this.validateArticle(article);  
+        this.validateStockQuantity(article,quantity);    
         dataOrderDetails=dataorder.registerOrderDetail(article,quantity);     
         return dataOrderDetails;
         
@@ -103,6 +111,14 @@ export class LOrder implements ILOrder {
         }
         return dataOrder;
     }
+    public  cancelOrder() {
+        var canceldataOrders =  this.order;
+         
+         if (canceldataOrders != null) {
+             this.order=null; 
+             return "The Order was canceled";
+            }
+     }
     public async saveOrder(client:Client) {
         var dataOrders :Order;
         dataOrders =  this.order;
@@ -114,6 +130,7 @@ export class LOrder implements ILOrder {
           if(haveorderdetails)
           {
              await FactoryData.getDOrder().addOrder(dataOrders);
+             this.order=null;
              return "The order was saved in the database";
           }
           else
@@ -127,11 +144,44 @@ export class LOrder implements ILOrder {
         }
       
     }
+    public async deliverOrder(dtorder:Order) {
+        this.validateState(dtorder.state);
+       var searchorder= await this.getOrder(dtorder.id);
+        dtorder.state="Delivered";
+        for(var ordetails of dtorder.listOrderDetails)
+        {
+           await LArticle.getInstance().deStock(ordetails._article._barcode,ordetails._quantity);
+        }
+        await FactoryData.getDOrder().updatestateOrder(dtorder);
+        return "The Order was delivered"
+       
+     }  
+     public async personalOrder(dtorder:Order) {
+        var persearchorder= await this.getOrder(dtorder.id) as Order;
+       
+        if(persearchorder.state=="Pending")
+        {
+            await FactoryData.getDOrder().deleteOrder(persearchorder);
+            return "The Order was deleted"
+        }
+        if(persearchorder.state=="Delivered")
+        {
+            await FactoryData.getDOrder().addOrder(persearchorder);
+            return "The Order was duplicated"
+        }
+       
+     } 
+    
+    //Get Orders
     public async getPendingOrders()  {
         var list = await FactoryData.getDOrder().listpendingOrders();
         return list;
       }
-   public async getOrder(id: number) {
+    public async getDeliveredOrders()  {
+        var list = await FactoryData.getDOrder().listdeliveredOrders();
+        return list;
+      }
+    public async getOrder(id: number) {
        
         var searchorder=await FactoryData.getDOrder().getOrder(id);
         if(searchorder==null)
@@ -140,12 +190,18 @@ export class LOrder implements ILOrder {
         }
         return searchorder
     }
-    public async deliverOrder(dtorder:Order) {
-       this.validateState(dtorder.state);
-      var searchorder= this.getOrder(dtorder.id);
-       dtorder.state="Delivered";
-       await FactoryData.getDOrder().updatestateOrder(dtorder);
-       return "The Order was delivered"
-      
-    }  
+    public async getClientOrders(identitycard:string)  {
+        var searchclient=await LUser.getInstance().getUser(identitycard);
+        if(searchclient==null)
+        {
+            throw new LogicException("That Client does not exists in the system"); 
+        }
+       
+        var list = await FactoryData.getDOrder().listClientOrders(identitycard);
+        return list;
+      }
+    public async getAllOrders()  {
+        var list = await FactoryData.getDOrder().getOrders();
+        return list;
+      }
 } 
