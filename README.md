@@ -65,12 +65,12 @@ Summary: This form will allow to duplicate or eliminate orders of the client cur
 
 Summary: This form will request a range of dates, from which all orders that have been delivered within that range will be searched. For the purposes of this list, it is considered that the order request date is the same as when the delivery was made. An XML file must be generated with said information. The format of the nodes should be the following:
 
-<Order>
-<Date> yyyyMMdd </Date>
-<Cliente> Client Name </Cliente>
-<Address> Delivery Address </Address>
-<QuantityTotalArticles> 9999 </QuantityTotalArticles>
-</Order>
+Order
+Date yyyyMMdd Date
+Cliente Client Name Cliente
+Address Delivery Address Address
+QuantityTotalArticles 9999 QuantityTotalArticles
+Order
 
 ## Usage
 
