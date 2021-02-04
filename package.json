@@ -1,22 +1,29 @@
 {
   "name": "e-commercee",
-  "version": "0.0.3",
+  "version": "0.0.1",
   "description": "This package contains a backend of what would be the logic of a e-commercee software, the architecture used is made in 3 layers",
-  "main": "app.js",
   "license": "MIT",
   "author": {
     "name": "Carlos Rodriguez"
   },
+  "main": "./ECommerce/dist/logic/FactoryLogic.js",
+  "module": "./ECommerce/dist/logic/FactoryLogic",
+  "exports": {
+      "require": "./ECommerce/dist/logic/FactoryLogic",
+      "import": "./ECommerce/dist/logic/FactoryLogic"
+   },
+  
   "repository": {
     "type": "git",
     "url": "https://github.com/rwkama1/E-Commerce"
   },
+  "types": "./ECommerce/logic/FactoryLogic.d.ts",
   "keywords": [
     "backend",
-    "typescript",
+    "TypeScript",
     "ts",
     "js",
-    "Javascript",
+    "javascript",
     "ecommerce"
 
   ],
