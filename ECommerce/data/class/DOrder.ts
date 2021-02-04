@@ -43,6 +43,21 @@ export class DOrder implements DOrder {
             throw new DataException("Order could not be deleted" + e.message);
         }
     }
+    public async updatestateOrder(dtorder:Order ) {
+        try {
+
+            let cn = await Conexion.uri().connect();
+            let query = { _id: dtorder.id };
+            var newvalues = { $set: { _state: dtorder.state} };
+            const colorder = cn.db("ECommerce").collection("Order");
+            const result = await colorder.updateOne(query,newvalues);
+            cn.close();
+
+        }
+        catch (e) {
+            throw new DataException("Order could not be updated" + e.message);
+        }
+    }
     //***************************************************** */
     public async getOrder(id:number) {
 
@@ -142,19 +157,24 @@ export class DOrder implements DOrder {
         }
 
     }
-    public async updatestateOrder(dtorder:Order ) {
+    public async listOrdersbyDate(date1:Date,date2:Date) {
         try {
-
             let cn = await Conexion.uri().connect();
-            let query = { _id: dtorder.id };
-            var newvalues = { $set: { _state: dtorder.state} };
-            const colorder = cn.db("ECommerce").collection("Order");
-            const result = await colorder.updateOne(query,newvalues);
+            const collection = cn.db("ECommerce").collection("Order");
+            const result = await collection.find({$and :[{  _date : { '$gte' : date1 } },{  _date : { '$lte' : date2 } },{  _state : 'Delivered' } ] }).toArray();
+
+            let array = [];
+            for (var order of result) {
+                var orderobj = new Order(order._id,order._date,order._state,order._total,order._client,order._listOrderDetails);
+                array.push(orderobj);
+            }
+            return array;
             cn.close();
 
         }
         catch (e) {
-            throw new DataException("Order could not be updated" + e.message);
+            throw new DataException("Orders could not be listed" + e.message);
         }
+
     }
 }

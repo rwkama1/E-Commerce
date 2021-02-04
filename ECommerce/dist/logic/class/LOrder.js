@@ -201,6 +201,12 @@ class LOrder {
             return list;
         });
     }
+    getOrdersbyDates(date1, date2) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var list = yield FactoryData_1.FactoryData.getDOrder().listOrdersbyDate(date1, date2);
+            return list;
+        });
+    }
 }
 exports.LOrder = LOrder;
 //# sourceMappingURL=LOrder.js.map

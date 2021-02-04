@@ -193,6 +193,12 @@ const Order = require("./ECommerce/dist/shared/entity/Order").Order;
            
 //    }); 
 
+// var date1=new Date("February 2,2021");
+// var date2=new Date("February 4,2021");
+// FactoryLogic.getLOrder().getOrdersbyDates(date1,date2).then(data => {
+//     console.log(data);
+// });
+
 
 
 

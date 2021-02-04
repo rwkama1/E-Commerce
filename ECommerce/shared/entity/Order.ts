@@ -5,7 +5,7 @@ import { OrderDetail } from "./OrderDetail";
 export class Order
 {
     private _id: number = 0;
-    private _date: Date = null;
+    private _date: Date = null;z
     private _state: string = "";
     private _total: number = 0;
     private _client: Client = null;

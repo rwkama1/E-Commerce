@@ -16,4 +16,5 @@ export interface ILOrder {
       getDeliveredOrders();
       getClientOrders(identitycard:string);
       getAllOrders();
+      getOrdersbyDates(date1:Date,date2:Date);
 }

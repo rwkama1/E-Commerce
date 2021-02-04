@@ -204,4 +204,8 @@ export class LOrder implements ILOrder {
         var list = await FactoryData.getDOrder().getOrders();
         return list;
       }
+      public async getOrdersbyDates(date1:Date,date2:Date)  {
+        var list = await FactoryData.getDOrder().listOrdersbyDate(date1,date2);
+        return list;
+      }
 } 

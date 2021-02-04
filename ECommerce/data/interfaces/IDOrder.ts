@@ -11,4 +11,5 @@ export interface IDOrder {
     getOrders();
     listdeliveredOrders();
     listClientOrders(identitycard:string);
+    listOrdersbyDate(date1:Date,date2:Date);
 }

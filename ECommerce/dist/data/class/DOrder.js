@@ -52,6 +52,21 @@ class DOrder {
             }
         });
     }
+    updatestateOrder(dtorder) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let cn = yield Conection_1.Conexion.uri().connect();
+                let query = { _id: dtorder.id };
+                var newvalues = { $set: { _state: dtorder.state } };
+                const colorder = cn.db("ECommerce").collection("Order");
+                const result = yield colorder.updateOne(query, newvalues);
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Order could not be updated" + e.message);
+            }
+        });
+    }
     //***************************************************** */
     getOrder(id) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -148,18 +163,22 @@ class DOrder {
             }
         });
     }
-    updatestateOrder(dtorder) {
+    listOrdersbyDate(date1, date2) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let cn = yield Conection_1.Conexion.uri().connect();
-                let query = { _id: dtorder.id };
-                var newvalues = { $set: { _state: dtorder.state } };
-                const colorder = cn.db("ECommerce").collection("Order");
-                const result = yield colorder.updateOne(query, newvalues);
+                const collection = cn.db("ECommerce").collection("Order");
+                const result = yield collection.find({ $and: [{ _date: { '$gte': date1 } }, { _date: { '$lte': date2 } }, { _state: 'Delivered' }] }).toArray();
+                let array = [];
+                for (var order of result) {
+                    var orderobj = new Order_1.Order(order._id, order._date, order._state, order._total, order._client, order._listOrderDetails);
+                    array.push(orderobj);
+                }
+                return array;
                 cn.close();
             }
             catch (e) {
-                throw new dataexception_1.DataException("Order could not be updated" + e.message);
+                throw new dataexception_1.DataException("Orders could not be listed" + e.message);
             }
         });
     }
