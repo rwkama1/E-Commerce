@@ -122,11 +122,10 @@ class LOrder {
     }
     saveOrder(client) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sclient = yield LUser_1.LUser.getInstance().getUser(client.identitycard);
-            this.validateClient(sclient);
+            this.validateClient(client);
             var dataOrders;
             dataOrders = this.order;
-            dataOrders.client = sclient;
+            dataOrders.client = client;
             if (this.order != null) {
                 var haveorderdetails = dataOrders.haveOrderDetails();
                 if (haveorderdetails) {
