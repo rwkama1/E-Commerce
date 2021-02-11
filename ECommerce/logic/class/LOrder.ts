@@ -122,8 +122,6 @@ export class LOrder implements ILOrder {
     public async saveOrder(client:Client) {
         var dataOrders :Order;
         dataOrders =  this.order;
-        var now =new Date();
-        dataOrders.date=new Date(now.getFullYear(),now.getMonth(),now.getDay());
         dataOrders.client=client;
         if (this.order != null) {
           var haveorderdetails=dataOrders.haveOrderDetails();

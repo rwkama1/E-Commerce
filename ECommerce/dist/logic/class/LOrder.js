@@ -119,8 +119,6 @@ class LOrder {
         return __awaiter(this, void 0, void 0, function* () {
             var dataOrders;
             dataOrders = this.order;
-            var now = new Date();
-            dataOrders.date = new Date(now.getFullYear(), now.getMonth(), now.getDay());
             dataOrders.client = client;
             if (this.order != null) {
                 var haveorderdetails = dataOrders.haveOrderDetails();

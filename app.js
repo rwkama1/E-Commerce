@@ -8,7 +8,7 @@
 // var dtart=new Article("12345678909898","Monitor Led 19.5' Hd Kolke Entradas Hdmi Y Vga Loi",,10,
 // "Disfrutá de una buena calidad de imagen con este monitor Kolke KES-459 que cuenta con una pantalla LED de 19.5 y una resolución de 1366 x 768. Puede inclinarse 5° hacia adelante y 15° hacia atrás.",
 // "gdsg.gif",dtcat);
-//  var dtclient = new Client("72289541",'Client3',"Client3","Client3","","");
+ var dtclient = new Client("72289541",'Client3',"Client3","Client3","","");
 // var dtadmin = new Administrator("85634858",'AdminAdmin',"Admin2","Admin","Manager");
 
 
