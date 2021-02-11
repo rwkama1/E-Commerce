@@ -126,7 +126,7 @@ class LOrder {
             this.validateClient(sclient);
             var dataOrders;
             dataOrders = this.order;
-            dataOrders.client = client;
+            dataOrders.client = sclient;
             if (this.order != null) {
                 var haveorderdetails = dataOrders.haveOrderDetails();
                 if (haveorderdetails) {

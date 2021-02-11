@@ -1,6 +1,6 @@
 {
   "name": "e-commercee",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "This package contains a backend of what would be the logic of a e-commercee software, the architecture used is made in 3 layers",
   "license": "MIT",
   "author": {
