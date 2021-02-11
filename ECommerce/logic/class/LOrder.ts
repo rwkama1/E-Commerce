@@ -57,7 +57,7 @@ export class LOrder implements ILOrder {
             throw new LogicException("That Article does not exists in the system");
         }
     }
-    private validateClient(client: Client)
+    private validateClient(client: User)
     {
         if (client==null) {
             throw new LogicException("That Client does not exists in the system");
@@ -128,11 +128,11 @@ export class LOrder implements ILOrder {
             }
      }
     public async saveOrder(client:Client) {
-        var sclient = await LUser.getInstance().getUser(client.identitycard)as Client;
+        var sclient = await LUser.getInstance().getUser(client.identitycard);
         this.validateClient(sclient);
         var dataOrders :Order;
         dataOrders =  this.order;
-        dataOrders.client=sclient;
+        dataOrders.client=sclient as Client;
         if (this.order != null) {
           var haveorderdetails=dataOrders.haveOrderDetails();
           if(haveorderdetails)
