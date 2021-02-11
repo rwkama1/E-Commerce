@@ -3,6 +3,7 @@ import { Article } from "../../shared/entity/Article";
 import { Client } from "../../shared/entity/Client";
 import { Order } from "../../shared/entity/Order";
 import { OrderDetail } from "../../shared/entity/OrderDetail";
+import { User } from "../../shared/entity/User";
 import { LogicException } from "../../shared/exceptions/logicexception";
 import { ILOrder } from "../interfaces/ILOrder";
 import { LArticle } from "./LArticle";
@@ -55,6 +56,13 @@ export class LOrder implements ILOrder {
         if (article==null) {
             throw new LogicException("That Article does not exists in the system");
         }
+    }
+    private validateClient(client: User)
+    {
+        if (client==null) {
+            throw new LogicException("That Client does not exists in the system");
+        }
+
     }
     private validateStockQuantity(article:Article,quantity:number)
     {
@@ -120,6 +128,8 @@ export class LOrder implements ILOrder {
             }
      }
     public async saveOrder(client:Client) {
+        var sclient = await LUser.getInstance().getUser(client.identitycard);
+        this.validateClient(sclient);
         var dataOrders :Order;
         dataOrders =  this.order;
         dataOrders.client=client;

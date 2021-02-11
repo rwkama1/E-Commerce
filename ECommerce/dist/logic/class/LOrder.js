@@ -55,6 +55,11 @@ class LOrder {
             throw new logicexception_1.LogicException("That Article does not exists in the system");
         }
     }
+    validateClient(client) {
+        if (client == null) {
+            throw new logicexception_1.LogicException("That Client does not exists in the system");
+        }
+    }
     validateStockQuantity(article, quantity) {
         if (article.stock < quantity) {
             throw new logicexception_1.LogicException("The quantity entered is greater than the stock of the item");
@@ -117,6 +122,8 @@ class LOrder {
     }
     saveOrder(client) {
         return __awaiter(this, void 0, void 0, function* () {
+            var sclient = yield LUser_1.LUser.getInstance().getUser(client.identitycard);
+            this.validateClient(sclient);
             var dataOrders;
             dataOrders = this.order;
             dataOrders.client = client;
