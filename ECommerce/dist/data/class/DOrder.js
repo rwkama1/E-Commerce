@@ -29,7 +29,7 @@ class DOrder {
                 var quantity1 = quantity++;
                 dtorder.id = quantity1;
                 var now = new Date();
-                dtorder.date = new Date(now.getFullYear(), now.getMonth(), now.getDay());
+                dtorder.date = now;
                 let cn = yield Conection_1.Conexion.uri().connect();
                 const collection = cn.db("ECommerce").collection("Order");
                 const result = yield collection.insertOne(dtorder);
