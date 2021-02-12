@@ -24,9 +24,10 @@ class DOrder {
     addOrder(dtorder) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                var quantityorders = yield this.getOrders();
-                var quantity = quantityorders.length;
-                var quantity1 = quantity++;
+                var orders = yield this.getOrders();
+                var lastid = orders.length;
+                var quantity = lastid;
+                var quantity1 = quantity + 10;
                 dtorder.id = quantity1;
                 var now = new Date();
                 dtorder.date = now;

@@ -16,10 +16,11 @@ export class DOrder implements DOrder {
     }
     public async addOrder(dtorder:Order ) {
         try {
-         var quantityorders=await this.getOrders();
-          var quantity=quantityorders.length;
-          var quantity1=quantity++;
-          dtorder.id=quantity1;
+        var orders=await this.getOrders();
+        var lastid=orders.length;
+        var quantity=lastid;
+        var quantity1=quantity+10;
+        dtorder.id=quantity1;
           var now =new Date();
           dtorder.date=now;
            let cn = await Conexion.uri().connect();
@@ -145,7 +146,7 @@ export class DOrder implements DOrder {
             const collection = cn.db("ECommerce").collection("Order");
             const result = await collection.find({}).toArray();
 
-            let array = [];
+            let array =[];
             for (var order of result) {
                 var orderobj = new Order(order._id,order._date,order._state,order._total,order._client,order._listOrderDetails);
                 array.push(orderobj);
@@ -180,4 +181,5 @@ export class DOrder implements DOrder {
         }
 
     }
+    
 }
