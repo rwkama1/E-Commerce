@@ -153,7 +153,7 @@ export class LOrder implements ILOrder {
     }
     public async deliverOrder(dtorder:Order) {
         this.validateState(dtorder.state);
-       var searchorder= await this.getOrder(dtorder.id);
+       
         dtorder.state="Delivered";
         for(var ordetails of dtorder.listOrderDetails)
         {
@@ -164,16 +164,16 @@ export class LOrder implements ILOrder {
        
      }  
      public async personalOrder(dtorder:Order) {
-        var persearchorder= await this.getOrder(dtorder.id) as Order;
        
-        if(persearchorder.state=="Pending")
+       
+        if(dtorder.state=="Pending")
         {
-            await FactoryData.getDOrder().deleteOrder(persearchorder);
+            await FactoryData.getDOrder().deleteOrder(dtorder);
             return "The Order was deleted"
         }
-        if(persearchorder.state=="Delivered")
+        if(dtorder.state=="Delivered")
         {
-            await FactoryData.getDOrder().addOrder(persearchorder);
+            await FactoryData.getDOrder().addOrder(dtorder);
             return "The Order was duplicated"
         }
        

@@ -145,7 +145,6 @@ class LOrder {
     deliverOrder(dtorder) {
         return __awaiter(this, void 0, void 0, function* () {
             this.validateState(dtorder.state);
-            var searchorder = yield this.getOrder(dtorder.id);
             dtorder.state = "Delivered";
             for (var ordetails of dtorder.listOrderDetails) {
                 yield LArticle_1.LArticle.getInstance().deStock(ordetails._article._barcode, ordetails._quantity);
@@ -156,13 +155,12 @@ class LOrder {
     }
     personalOrder(dtorder) {
         return __awaiter(this, void 0, void 0, function* () {
-            var persearchorder = yield this.getOrder(dtorder.id);
-            if (persearchorder.state == "Pending") {
-                yield FactoryData_1.FactoryData.getDOrder().deleteOrder(persearchorder);
+            if (dtorder.state == "Pending") {
+                yield FactoryData_1.FactoryData.getDOrder().deleteOrder(dtorder);
                 return "The Order was deleted";
             }
-            if (persearchorder.state == "Delivered") {
-                yield FactoryData_1.FactoryData.getDOrder().addOrder(persearchorder);
+            if (dtorder.state == "Delivered") {
+                yield FactoryData_1.FactoryData.getDOrder().addOrder(dtorder);
                 return "The Order was duplicated";
             }
         });
