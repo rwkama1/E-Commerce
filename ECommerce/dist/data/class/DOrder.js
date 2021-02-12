@@ -157,8 +157,8 @@ class DOrder {
                     var orderobj = new Order_1.Order(order._id, order._date, order._state, order._total, order._client, order._listOrderDetails);
                     array.push(orderobj);
                 }
-                return array;
                 cn.close();
+                return array;
             }
             catch (e) {
                 throw new dataexception_1.DataException("Orders could not be listed" + e.message);

@@ -1,6 +1,6 @@
 {
-  "name": "ecommerceee",
-  "version": "0.0.4",
+  "name": "e-commercee",
+  "version": "0.0.13",
   "description": "This package contains a backend of what would be the logic of a e-commercee software, the architecture used is made in 3 layers",
   "license": "MIT",
   "author": {
@@ -19,7 +19,6 @@
     "js",
     "javascript",
     "ecommerce"
-
   ],
   "scripts": {
     "start": "node app"
