@@ -16,11 +16,8 @@ export class DOrder implements DOrder {
     }
     public async addOrder(dtorder:Order ) {
         try {
-        var orders=await this.getOrders();
-        var lastid=orders.length;
-        var quantity=lastid;
-        var quantity1=quantity+10;
-        dtorder.id=quantity1;
+      var randomenumber = Math.floor(Math.random()*(9999999999+1))
+        dtorder.id=randomenumber;
           var now =new Date();
           dtorder.date=now;
            let cn = await Conexion.uri().connect();

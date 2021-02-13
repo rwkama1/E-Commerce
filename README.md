@@ -74,6 +74,8 @@ Summary: This form will request a range of dates, from which all orders that hav
 
 ## Usage
 
+https://github.com/rwkama1/APIECommerce
+
 ```Javascript
 const FactoryLogic = require("./ECommerce/dist/logic/FactoryLogic").FactoryLogic;
 const Category = require("./ECommerce/dist/shared/entity/Category").Category;

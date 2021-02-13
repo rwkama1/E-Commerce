@@ -24,11 +24,8 @@ class DOrder {
     addOrder(dtorder) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                var orders = yield this.getOrders();
-                var lastid = orders.length;
-                var quantity = lastid;
-                var quantity1 = quantity + 10;
-                dtorder.id = quantity1;
+                var randomenumber = Math.floor(Math.random() * (9999999999 + 1));
+                dtorder.id = randomenumber;
                 var now = new Date();
                 dtorder.date = now;
                 let cn = yield Conection_1.Conexion.uri().connect();
