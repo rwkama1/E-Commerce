@@ -72,6 +72,25 @@ class DClient {
             }
         });
     }
+    loginClient(username, password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let cliobj = null;
+            try {
+                let cn = yield Conection_1.Conexion.uri().connect();
+                const collection = cn.db("ECommerce").collection("Client");
+                const client = yield collection.findOne({ _username: username, _password: password });
+                if (client == null) {
+                    return null;
+                }
+                cliobj = new Client_1.Client(client._identitycard, client._completename, client._password, client._username, client._shippingaddress, client._creditcardnumber);
+                return cliobj;
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Client could not be searched");
+            }
+        });
+    }
     updateClient(dtclient) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

@@ -14,7 +14,6 @@ const FactoryData_1 = require("../../data/FactoryData");
 const Administrator_1 = require("../../shared/entity/Administrator");
 const Client_1 = require("../../shared/entity/Client");
 const logicexception_1 = require("../../shared/exceptions/logicexception");
-const bcrypt = require('bcrypt');
 class LUser {
     constructor() { }
     static getInstance() {
@@ -162,8 +161,6 @@ class LUser {
     addUser(dtuser) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.validateAddUser(dtuser);
-            var hashedpassword = yield bcrypt.hash(dtuser.password, 5);
-            dtuser.password = hashedpassword;
             if (dtuser instanceof Client_1.Client) {
                 FactoryData_1.FactoryData.getDClient().addClient(dtuser);
             }
@@ -175,8 +172,6 @@ class LUser {
     updateUser(dtuser) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.validateUpdateUser(dtuser);
-            var hashedpassword = yield bcrypt.hash(dtuser.password, 5);
-            dtuser.password = hashedpassword;
             if (dtuser instanceof Client_1.Client) {
                 FactoryData_1.FactoryData.getDClient().updateClient(dtuser);
             }
@@ -200,22 +195,14 @@ class LUser {
         return __awaiter(this, void 0, void 0, function* () {
             this.validateLogin(username, password);
             var suser;
-            suser = yield FactoryData_1.FactoryData.getDClient().getClientbyusername(username);
+            suser = yield FactoryData_1.FactoryData.getDClient().loginClient(username, password);
             if (suser == null) {
-                suser = yield FactoryData_1.FactoryData.getDAdmin().getAdminbyusername(username);
+                suser = yield FactoryData_1.FactoryData.getDAdmin().loginAdmin(username, password);
             }
-            if (suser) {
-                var match = yield bcrypt.compare(password, suser.password);
-                if (match) {
-                    return suser;
-                }
-                else {
-                    throw new logicexception_1.LogicException("Incorrect password");
-                }
+            if (suser == null) {
+                throw new logicexception_1.LogicException("Wrong username or password");
             }
-            else {
-                throw new logicexception_1.LogicException("That User does not exist in the system");
-            }
+            return suser;
         });
     }
     getClients() {

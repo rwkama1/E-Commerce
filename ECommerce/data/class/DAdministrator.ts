@@ -27,6 +27,31 @@ export class DAdministrator implements IDAdministrator {
             throw new DataException("Admin could not be added" + e.message);
         }
     }
+    public async getAdminbyusername(username:string) {
+
+        let admobj= null;
+        try {
+            let cn = await Conexion.uri().connect();
+            const collection = cn.db("ECommerce").collection("Admin");
+            const Admin = await collection.findOne({_username:username});
+
+            if (Admin == null) 
+            { return null; }
+           
+            admobj = new Administrator(Admin._identitycard,
+                Admin._completename,Admin._password,
+                Admin._username,Admin._position);
+    
+           
+            return admobj;
+            cn.close();
+
+        }
+        catch (e) {
+            throw new DataException("Client could not be searched");
+        }
+
+    }  
      public async getAdmin(idcard:string) {
 
         let admobj= null;
@@ -51,13 +76,13 @@ export class DAdministrator implements IDAdministrator {
         }
 
     }
-    public async getAdminbyusername(username:string) {
+    public async loginAdmin(username:string,password:string) {
 
         let admobj= null;
         try {
             let cn = await Conexion.uri().connect();
             const collection = cn.db("ECommerce").collection("Admin");
-            const Admin = await collection.findOne({_username:username});
+            const Admin = await collection.findOne({_username:username,_password:password});
 
             if (Admin == null) 
             { return null; }

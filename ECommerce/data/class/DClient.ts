@@ -77,6 +77,32 @@ export class DClient implements IDClient {
         }
 
     }  
+    public async loginClient(username:string,password:string) {
+
+        let cliobj= null;
+        try {
+            let cn = await Conexion.uri().connect();
+            const collection = cn.db("ECommerce").collection("Client");
+            const client = await collection.findOne({_username:username,_password:password});
+
+            if (client == null) 
+            { return null; }
+           
+            cliobj = new Client(client._identitycard,
+                client._completename,client._password,
+                client._username,client._shippingaddress,
+                client._creditcardnumber
+               );
+           
+            return cliobj;
+            cn.close();
+
+        }
+        catch (e) {
+            throw new DataException("Client could not be searched");
+        }
+
+    }  
     public async updateClient(dtclient: Client) {
         try {
 

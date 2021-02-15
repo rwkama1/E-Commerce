@@ -4,7 +4,7 @@ import { Client } from "../../shared/entity/Client";
 import { User } from "../../shared/entity/User";
 import { LogicException } from "../../shared/exceptions/logicexception";
 import { ILUser } from "../interfaces/ILUser";
-const bcrypt = require('bcrypt');
+
 
 
 export class LUser implements ILUser {
@@ -175,8 +175,6 @@ export class LUser implements ILUser {
     public async addUser(dtuser: User) {
 
         await this.validateAddUser(dtuser);
-        var hashedpassword=await bcrypt.hash(dtuser.password,5);
-        dtuser.password=hashedpassword;
         if (dtuser instanceof Client)
         {
             FactoryData.getDClient().addClient(dtuser);
@@ -191,8 +189,6 @@ export class LUser implements ILUser {
     public async updateUser(dtuser: User) {
 
         await this.validateUpdateUser(dtuser);
-        var hashedpassword=await bcrypt.hash(dtuser.password,5);
-        dtuser.password=hashedpassword;
         if (dtuser instanceof Client)
         {
             FactoryData.getDClient().updateClient(dtuser);
@@ -224,28 +220,17 @@ export class LUser implements ILUser {
             this.validateLogin(username,password);
 
             var suser: User;
-            suser = await FactoryData.getDClient().getClientbyusername(username);
+            suser = await FactoryData.getDClient().loginClient(username,password);
             if(suser==null)
             {
-                suser = await FactoryData.getDAdmin().getAdminbyusername(username);
+                suser = await FactoryData.getDAdmin().loginAdmin(username,password);
             }
-            if(suser)
+            if(suser==null)
             {
-                var match=await bcrypt.compare(password,suser.password);
-                if(match)
-                {
-                    return suser;
-                }
-                else
-                {
-                    throw new LogicException("Incorrect password");
-                }
-            }
-            else
-            {
-                throw new LogicException("That User does not exist in the system");
+                throw new LogicException("Wrong username or password");
 
             }
+            return suser;
     }
     public async getClients()  {
         var list = await FactoryData.getDClient().getClients();

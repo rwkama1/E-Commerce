@@ -34,6 +34,25 @@ class DAdministrator {
             }
         });
     }
+    getAdminbyusername(username) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let admobj = null;
+            try {
+                let cn = yield Conection_1.Conexion.uri().connect();
+                const collection = cn.db("ECommerce").collection("Admin");
+                const Admin = yield collection.findOne({ _username: username });
+                if (Admin == null) {
+                    return null;
+                }
+                admobj = new Administrator_1.Administrator(Admin._identitycard, Admin._completename, Admin._password, Admin._username, Admin._position);
+                return admobj;
+                cn.close();
+            }
+            catch (e) {
+                throw new dataexception_1.DataException("Client could not be searched");
+            }
+        });
+    }
     getAdmin(idcard) {
         return __awaiter(this, void 0, void 0, function* () {
             let admobj = null;
@@ -53,13 +72,13 @@ class DAdministrator {
             }
         });
     }
-    getAdminbyusername(username) {
+    loginAdmin(username, password) {
         return __awaiter(this, void 0, void 0, function* () {
             let admobj = null;
             try {
                 let cn = yield Conection_1.Conexion.uri().connect();
                 const collection = cn.db("ECommerce").collection("Admin");
-                const Admin = yield collection.findOne({ _username: username });
+                const Admin = yield collection.findOne({ _username: username, _password: password });
                 if (Admin == null) {
                     return null;
                 }
